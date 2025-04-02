@@ -1,13 +1,15 @@
 <?php
 
-class Cart
+namespace Model;
+
+require_once "../Model/Model.php";
+
+class Cart extends Model
 {
     public function getProductsByUserId(int $userId)
     {
         $userId = $_SESSION['userId'];
-        $pdo = new PDO('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pwd');
-
-        $stmt = $pdo->query("SELECT * FROM user_products WHERE user_id = {$userId}");
+        $stmt = $this->pdo->query("SELECT * FROM user_products WHERE user_id = {$userId}");
         $result = $stmt->fetchAll();
 
         return $result;
@@ -15,10 +17,7 @@ class Cart
 
     public function getProductId(int $productId)
     {
-        $userId = $_SESSION['userId'];
-        $pdo = new PDO('pgsql:host=db;port=5432;dbname=mydb', 'user', 'pwd');
-
-        $stmt = $pdo->query("SELECT * FROM products WHERE id = {$productId}");
+        $stmt = $this->pdo->query("SELECT * FROM products WHERE id = {$productId}");
         $result = $stmt->fetch();
 
         return $result;

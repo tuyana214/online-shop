@@ -10,6 +10,7 @@
     </div>
     <div class="profile-actions">
         <a href="/edit-profile" class="btn btn-primary">Редактировать профиль</a>
+        <a href="/logout" class="btn btn-primary">Выйти</a>
     </div>
 </div>
 

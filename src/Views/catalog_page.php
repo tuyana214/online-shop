@@ -24,7 +24,7 @@
                 </a>
             </div>
 
-            <form action="/add-product" method="POST">
+            <form action="/catalog" method="POST">
                 <div class="container">
                     <input type="hidden" placeholder="Enter product-id" name="product_id" value="<?php echo $product['id']; ?>" id="product_id" required>
 

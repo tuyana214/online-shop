@@ -1,10 +1,15 @@
 <?php
 
+namespace Controllers;
+
 class UserController
 {
     public function getRegistrate()
     {
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
         if (isset($_SESSION['userId'])) {
             header("Location: /catalog");
         }
@@ -23,7 +28,7 @@ class UserController
             $password = password_hash($password, PASSWORD_DEFAULT);
 
             require_once '../Model/User.php';
-            $userModel = new User();
+            $userModel = new \Model\User();
 
             $userModel->insertData($name, $email, $password);
 
@@ -56,7 +61,7 @@ class UserController
                 $errors['email'] = "Email некорректный.";
             } else {
                 require_once '../Model/User.php';
-                $userModel = new User();
+                $userModel = new \Model\User();
 
                 $user = $userModel->getByEmail($email);
                 if ($user !== false) {
@@ -103,7 +108,7 @@ class UserController
             $password = $_POST['password'];
 
             require_once '../Model/User.php';
-            $userModel = new User();
+            $userModel = new \Model\User();
 
             $user = $userModel->getUsernameByEmail($username);
 
@@ -148,6 +153,18 @@ class UserController
         return $errors;
     }
 
+    public function logout()
+    {
+        session_start();
+
+        session_unset();
+
+        session_destroy();
+
+        header("Location: /login");
+        exit;
+    }
+
     public function showProfile()
     {
         session_start();
@@ -156,7 +173,7 @@ class UserController
             $userId = $_SESSION['userId'];
 
             require_once '../Model/User.php';
-            $userModel = new User();
+            $userModel = new \Model\User();
 
             $user = $userModel->getByUserId($userId);
 
@@ -198,7 +215,7 @@ class UserController
             $userId = $_SESSION['userId'];
 
             require_once '../Model/User.php';
-            $userModel = new User();
+            $userModel = new \Model\User();
 
             if ($new_password) {
                 $userModel->updateDataWhereNewPswById($name, $email, $new_password, $userId);
@@ -235,7 +252,7 @@ class UserController
                 $errors['email'] = "Некорректный email";
             } else {
                 require_once '../Model/User.php';
-                $userModel = new User();
+                $userModel = new \Model\User();
 
                 $user = $userModel->getByEmail($email);
 

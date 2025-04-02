@@ -1,5 +1,10 @@
 <?php
-session_start();
+
+namespace Controllers;
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 class CartController
 {
 
@@ -16,7 +21,7 @@ class CartController
         $userId = $_SESSION['userId'];
 
         require_once '../Model/Cart.php';
-        $cartModel = new Cart();
+        $cartModel = new \Model\Cart();
 
         $userProducts = $cartModel->getProductsByUserId($userId);
 

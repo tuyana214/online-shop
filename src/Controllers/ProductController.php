@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 class ProductController
 {
     public function getProducts()
@@ -8,9 +10,9 @@ class ProductController
 
         if (isset($_SESSION['userId'])) {
             require_once '../Model/Product.php';
-            $productModel = new Product();
+            $productModel = new \Model\Product();
 
-            $products = $productModel->getUserProducts();
+            $products = $productModel->getProducts();
 
             require_once '../Views/catalog_page.php';
         } else {
@@ -25,7 +27,9 @@ class ProductController
     }
     public function addProduct()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['userId'])) {
             header("Location: /login");
@@ -36,7 +40,7 @@ class ProductController
 
         if (empty($errors)) {
             require_once '../Model/Product.php';
-            $productModel = new Product();
+            $productModel = new \Model\Product();
 
             $userId = $_SESSION['userId'];
             $productId = $_POST['product_id'];
@@ -51,9 +55,10 @@ class ProductController
 
                 $productModel->updateProduct($amount, $userId, $productId);
             }
+            header("Location: /catalog");
+            exit;
         }
-        header("Location: /cart");
-        exit;
+
     }
 
     private function validateAddProduct(array $data): array
@@ -62,7 +67,7 @@ class ProductController
 
         if (isset($data['product_id'])) {
             require_once '../Model/Product.php';
-            $productModel = new Product();
+            $productModel = new \Model\Product();
             $productId = (int) $data['product_id'];
 
             $data = $productModel->getProductId($productId);
