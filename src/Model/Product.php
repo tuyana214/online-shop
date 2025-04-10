@@ -6,7 +6,7 @@ require_once "../Model/Model.php";
 
 class Product extends Model
 {
-    public function getProducts(): array|false
+    public function getAll(): array|false
     {
         $stmt = $this->pdo->query("SELECT * FROM products");
         $result = $stmt->fetchAll();
@@ -14,21 +14,10 @@ class Product extends Model
         return $result;
     }
 
-    public function getUserProductsById(int $userId, int $productId): array|false
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM user_products WHERE user_id = :user_id AND product_id = :product_id");
-        $stmt->execute(['user_id' => $userId, 'product_id' => $productId]);
-        $result = $stmt->fetch();
-
-        return $result;
-    }
-
     public function insertProduct(int $userId, int $productId, int $amount)
     {
         $stmt = $this->pdo->prepare("INSERT INTO user_products (user_id, product_id, amount) VALUES (:userId, :product_id, :amount)");
-        $result = $stmt->execute(['userId' => $userId, 'product_id' => $productId, 'amount' => $amount]);
-
-        return $result;
+        $stmt->execute(['userId' => $userId, 'product_id' => $productId, 'amount' => $amount]);
     }
 
     public function updateProduct(int $amount, int $userId, int $productId)
@@ -46,5 +35,12 @@ class Product extends Model
         $result = $stmt->fetch();
 
         return $result;
+    }
+
+    public function getOneById(int $productId): array|false
+    {
+        $stmt = $this->pdo->query("SELECT * FROM products WHERE id = $productId");
+        $product = $stmt->fetch();
+        return $product;
     }
 }

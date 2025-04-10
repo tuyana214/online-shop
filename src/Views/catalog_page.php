@@ -1,8 +1,9 @@
-<form action="/catalog" method="POST">
+
 <div class="container">
     <div class="header">
         <a href="/profile">Мой профиль</a>
         <a href="/cart">Моя корзина</a>
+        <a href="/orders">Мои заказы</a>
         <h3>Catalog</h3>
     </div>
 
@@ -24,7 +25,7 @@
                 </a>
             </div>
 
-            <form action="/catalog" method="POST">
+            <form action="/add-product" method="POST">
                 <div class="container">
                     <input type="hidden" placeholder="Enter product-id" name="product_id" value="<?php echo $product['id']; ?>" id="product_id" required>
 

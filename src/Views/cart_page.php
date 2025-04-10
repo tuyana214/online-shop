@@ -5,7 +5,7 @@
     <nav>
         <a href="/catalog">Каталог</a>
         <a href="/profile">Мой профиль</a>
-        <a href="/order">Заказать</a>
+        <a href="/create-order">Заказать</a>
     </nav>
 </header>
 

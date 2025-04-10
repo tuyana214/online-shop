@@ -1,5 +1,6 @@
 <div class="container">
     <div class="profile-info">
+        <a href="/catalog" class="back-to-catalog">Вернуться в каталог</a>
         <header class="panel-title">
             <div class="text-center">
                 <strong>Профиль пользователя</strong>
@@ -20,6 +21,22 @@
         margin: 0 auto;
         text-align: center;
     }
+
+    .back-to-catalog {
+        font-size: 18px;
+        color: deeppink;
+        font-weight: bold;
+        text-decoration: none;
+        margin-bottom: 20px;
+        display: inline-block;
+        transition: color 0.3s, text-decoration 0.3s;
+    }
+
+    .back-to-catalog:hover {
+        color: deeppink;
+        text-decoration: underline;
+    }
+
     .profile-link {
         font-size: 18px;
         color: deeppink;

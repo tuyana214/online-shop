@@ -2,17 +2,25 @@
 
 namespace Controllers;
 
+use Model\Product;
+use Model\UserProduct;
+
 class ProductController
 {
+    private Product $productModel;
+    private UserProduct $userProductModel;
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+        $this->userProductModel = new UserProduct();
+    }
     public function getProducts()
     {
         session_start();
 
         if (isset($_SESSION['userId'])) {
-            require_once '../Model/Product.php';
-            $productModel = new \Model\Product();
-
-            $products = $productModel->getProducts();
+            $products = $this->productModel->getAll();
 
             require_once '../Views/catalog_page.php';
         } else {
@@ -39,21 +47,18 @@ class ProductController
         $errors = $this->validateAddProduct($_POST);
 
         if (empty($errors)) {
-            require_once '../Model/Product.php';
-            $productModel = new \Model\Product();
-
             $userId = $_SESSION['userId'];
             $productId = $_POST['product_id'];
             $amount = $_POST['amount'];
 
-            $data = $productModel->getUserProductsById($userId, $productId);
+            $data = $this->userProductModel->getById($userId, $productId);
 
             if ($data === false) {
-                $productModel->insertProduct($userId, $productId, $amount);
+                $this->productModel->insertProduct($userId, $productId, $amount);
             } else {
                 $amount = $data['amount'] + $amount;
 
-                $productModel->updateProduct($amount, $userId, $productId);
+                $this->productModel->updateProduct($amount, $userId, $productId);
             }
             header("Location: /catalog");
             exit;
@@ -66,11 +71,9 @@ class ProductController
         $errors = [];
 
         if (isset($data['product_id'])) {
-            require_once '../Model/Product.php';
-            $productModel = new \Model\Product();
             $productId = (int) $data['product_id'];
 
-            $data = $productModel->getProductId($productId);
+            $data = $this->productModel->getProductId($productId);
 
             if ($data === false) {
                 $errors['product_id'] = "Продукт не найден";

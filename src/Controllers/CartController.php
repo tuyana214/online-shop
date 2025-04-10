@@ -2,14 +2,19 @@
 
 namespace Controllers;
 
+use Model\Cart;
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 class CartController
 {
+    private Cart $cartModel;
 
     public function __construct()
     {
+        $this->cartModel = new Cart();
+
         if (!isset($_SESSION['userId'])) {
             header("Location: /login");
             exit();
@@ -20,17 +25,14 @@ class CartController
     {
         $userId = $_SESSION['userId'];
 
-        require_once '../Model/Cart.php';
-        $cartModel = new \Model\Cart();
-
-        $userProducts = $cartModel->getProductsByUserId($userId);
+        $userProducts = $this->cartModel->getProductsByUserId($userId);
 
         $products = [];
         $totalPrice = 0;
 
         foreach ($userProducts as $userProduct) {
             $productId = $userProduct['product_id'];
-            $product = $cartModel->getProductId($productId);
+            $product = $this->cartModel->getProductId($productId);
 
             if ($product) {
                 $product['amount'] = $userProduct['amount'];
