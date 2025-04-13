@@ -67,7 +67,7 @@ class UserController
                 $errors['email'] = "Email некорректный.";
             } else {
                 $user = $this->userModel->getByEmail($email);
-                if ($user !== false) {
+                if ($user !== null) {
                     $errors['email'] = "Этот email уже занят.";
                 }
             }
@@ -111,17 +111,15 @@ class UserController
             $password = $_POST['password'];
 
             $user = $this->userModel->getUsernameByEmail($username);
-
-            if ($user === false) {
+            if ($user === null) {
                 $errors['username'] = "Неверный email или пароль.";
             } else {
-                $passwordDb = $user['password'];
-
+                $passwordDb = $user->getPassword();
                 if (password_verify($password, $passwordDb)) {
                     if (session_status() !== PHP_SESSION_ACTIVE) {
                         session_start();
                     }
-                    $_SESSION['userId'] = $user['id'];
+                    $_SESSION['userId'] = $user->getId();
 
                     header("Location: /catalog");
                     exit;
@@ -175,12 +173,10 @@ class UserController
 
         if (isset($_SESSION['userId'])) {
             $userId = $_SESSION['userId'];
-
             $user = $this->userModel->getByUserId($userId);
 
-            require_once '../Views/profile_page.php';
-
             if ($user) {
+                require_once '../Views/profile_page.php';
             } else {
                 echo "Пользователь не найден.";
             }
@@ -252,7 +248,7 @@ class UserController
                 $user = $this->userModel->getByEmail($email);
 
                 $userId = $_SESSION['userId'];
-                if ($user && $user['id'] !== $userId) {
+                if ($user && $user->getId() !== $userId) {
                     $errors['email'] = "Этот Email уже зарегистрирован";
                 }
             }

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Model\Cart;
+use Model\Product;
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -10,10 +11,12 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 class CartController
 {
     private Cart $cartModel;
+    private Product $productModel;
 
     public function __construct()
     {
         $this->cartModel = new Cart();
+        $this->productModel = new Product();
 
         if (!isset($_SESSION['userId'])) {
             header("Location: /login");
@@ -31,14 +34,22 @@ class CartController
         $totalPrice = 0;
 
         foreach ($userProducts as $userProduct) {
-            $productId = $userProduct['product_id'];
-            $product = $this->cartModel->getProductId($productId);
+            $productId = $userProduct->getProductId();
+
+            $product = $this->productModel->getOneById($productId);
 
             if ($product) {
-                $product['amount'] = $userProduct['amount'];
-                $product['total_price'] = $product['price'] * $userProduct['amount'];
-                $products[] = $product;
-                $totalPrice += $product['total_price'];
+                $productData = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'description' => $product->getDescription(),
+                    'price' => $product->getPrice(),
+                    'image_url' => $product->getImageUrl(),
+                    'amount' => $userProduct->getAmount(),
+                    'total_price' => $product->getPrice() * $userProduct->getAmount(),
+                ];
+                $products[] = $productData;
+                $totalPrice += $productData['total_price'];
             }
         }
         require_once '../Views/cart_page.php';

@@ -1,5 +1,6 @@
 <?php
 
+use Controllers\CartController;
 use Controllers\OrderController;
 use Controllers\ProductController;
 use Controllers\UserController;

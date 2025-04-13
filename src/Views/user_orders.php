@@ -10,11 +10,11 @@
     <div class="order-container">
             <?php foreach ($newUserOrders as $newUserOrder): ?>
                 <div class="order-card">
-                    <h2>Заказ № <?php echo $newUserOrder['id']?></h2>
-                    <p><?php echo $newUserOrder['contact_name']?></p>
-                    <p><?php echo $newUserOrder['contact_phone']?></p>
-                    <p><?php echo $newUserOrder['comment']?></p>
-                    <p><?php echo $newUserOrder['address']?></p>
+                    <h2>Заказ № <?php echo $newUserOrder['id']; ?></h2>
+                    <p><?php echo $newUserOrder['contactName']; ?></p>
+                    <p><?php echo $newUserOrder['contactPhone']; ?></p>
+                    <p><?php echo $newUserOrder['comment']; ?></p>
+                    <p><?php echo $newUserOrder['address']; ?></p>
                     <table>
                         <thead>
                         <tr>

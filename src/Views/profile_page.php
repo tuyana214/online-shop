@@ -6,8 +6,8 @@
                 <strong>Профиль пользователя</strong>
             </div>
         </header>
-        <p><strong>Имя:</strong> <?php echo htmlspecialchars($user['name'] ?? 'Не указано'); ?></p>
-        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email'] ?? 'Не указано'); ?></p>
+        <p><strong>Имя:</strong> <?php echo htmlspecialchars($user->getName() ?? 'Не указано'); ?></p>
+        <p><strong>Email:</strong> <?php echo htmlspecialchars($user->getEmail() ?? 'Не указано'); ?></p>
     </div>
     <div class="profile-actions">
         <a href="/edit-profile" class="btn btn-primary">Редактировать профиль</a>

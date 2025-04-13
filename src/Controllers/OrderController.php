@@ -52,8 +52,8 @@ class OrderController
             $userProducts = $this->userProductModel->getAllByUserId($userId);
 
             foreach ($userProducts as $userProduct) {
-                $productId = $userProduct['product_id'];
-                $amount = $userProduct['amount'];
+                $productId = $userProduct->getProductId();
+                $amount = $userProduct->getAmount();
 
                 $this->orderProductModel->create($orderId, $productId, $amount);
             }
@@ -108,8 +108,8 @@ class OrderController
 
         $totalPrice = 0;
         foreach ($userProducts as $userProduct) {
-            $productPrice = $this->userProductModel->getProductPrice($userProduct['product_id']);
-            $totalPrice += $productPrice * $userProduct['amount'];
+            $productPrice = $this->productModel->getProductPrice($userProduct->getProductId());
+            $totalPrice += $productPrice * $userProduct->getAmount();
         }
         require_once '../Views/order_conf.php';
     }
@@ -126,28 +126,37 @@ class OrderController
         }
 
         $userId = $_SESSION['userId'];
-
         $userOrders = $this->orderModel->getAllByUserId($userId);
 
         $newUserOrders = [];
 
         foreach ($userOrders as $userOrder) {
-            $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder['id']);
+            $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
 
             $newOrderProducts = [];
             $sum = 0;
-            foreach ($orderProducts as $orderProduct) {
-                $product = $this->productModel->getOneById($orderProduct['product_id']);
-                $orderProduct['name'] = $product['name'];
-                $orderProduct['price'] = $product['price'];
-                $orderProduct['totalSum'] = $orderProduct['amount'] * $orderProduct['price'];
-                $newOrderProducts[] = $orderProduct;
 
-                $sum = $sum + $orderProduct['totalSum'];
+            foreach ($orderProducts as $orderProduct) {
+                $product = $this->productModel->getOneById($orderProduct->getProductId());
+                $orderProductData = [
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'amount' => $orderProduct->getAmount(),
+                    'totalSum' => $orderProduct->getAmount() * $product->getPrice(),
+                ];
+
+                $newOrderProducts[] = $orderProductData;
+                $sum += $orderProductData['totalSum'];
             }
-            $userOrder['total'] = $sum;
-            $userOrder['products'] = $newOrderProducts;
-            $newUserOrders[] = $userOrder;
+            $newUserOrders[] = [
+                'id' => $userOrder->getId(),
+                'contactName' => $userOrder->getContactName(),
+                'contactPhone' => $userOrder->getContactPhone(),
+                'comment' => $userOrder->getComment(),
+                'address' => $userOrder->getAddress(),
+                'products' => $newOrderProducts,
+                'total' => $sum,
+            ];
         }
 
         require_once '../Views/user_orders.php';
