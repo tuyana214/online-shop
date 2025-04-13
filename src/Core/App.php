@@ -23,7 +23,6 @@ class App
                 $class = $handler['class'];
                 $method = $handler['method'];
 
-//                require_once "../Controllers/$class.php";
                 $controller = new $class();
                 $controller->$method();
             } else {
@@ -36,11 +35,19 @@ class App
         }
     }
 
-    public function addRoute(string $route, string $routeMethod, string $className, string $method)
+    public function get(string $route, string $className, string $method)
     {
-        $this->routes[$route][$routeMethod] = [
-                'class' => $className,
-                'method' => $method
+        $this->routes[$route]['GET'] = [
+            'class' => $className,
+            'method' => $method
+        ];
+    }
+
+    public function post(string $route, string $className, string $method)
+    {
+        $this->routes[$route]['POST'] = [
+            'class' => $className,
+            'method' => $method
         ];
     }
 }
