@@ -34,6 +34,18 @@ class Cart extends Model
         return $productsArray;
     }
 
+    public function updateProduct(int $amount, int $userId, int $productId): bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE user_products SET amount = {$amount} WHERE user_id = {$userId} AND product_id = {$productId}");
+        return $stmt->execute();
+    }
+
+    public function deleteProduct(int $userId, int $productId)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM user_products WHERE user_id = {$userId} AND product_id = {$productId}");
+        return $stmt->execute();
+    }
+
     public function getId(): int
     {
         return $this->id;

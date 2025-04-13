@@ -7,7 +7,6 @@
         <h3>Catalog</h3>
     </div>
 
-    <div class="card-deck">
         <?php foreach ($products as $product): ?>
             <div class="card text-center">
                 <a href="#">
@@ -25,20 +24,18 @@
                 </a>
             </div>
 
-            <form action="/add-product" method="POST">
-                <div class="container">
-                    <input type="hidden" placeholder="Enter product-id" name="product_id" value="<?php echo $product->getId(); ?>" id="product_id" required>
-
-                    <label for="amount"><b>Amount</b></label>
-                    <?php if (isset($errors['amount'])): ?>
-                        <label style="color:red"><?php echo $errors['amount']; ?></label>
-                    <?php endif; ?>
-                    <input type="text" placeholder="Enter amount" name="amount" id="amount" required>
-
-                    <button type="submit" class="registerbtn">Add product</button>
-                </div>
-            </form>
-
+            <div class="amount-controls">
+                <form action="/remove-product" method="POST" style="display: inline;">
+                    <input type="hidden" name="product_id" value="<?php echo $product->getId(); ?>">
+                    <input type="hidden" name="amount" value="1">
+                    <button type="submit">-</button>
+                </form>
+                <form action="/add-product" method="POST" style="display: inline;">
+                    <input type="hidden" name="product_id" value="<?php echo $product->getId(); ?>">
+                    <input type="hidden" name="amount" value="1">
+                    <button type="submit">+</button>
+                </form>
+            </div>
         <?php endforeach; ?>
 
 <style>

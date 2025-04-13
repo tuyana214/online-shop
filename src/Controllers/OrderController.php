@@ -132,21 +132,20 @@ class OrderController
 
         foreach ($userOrders as $userOrder) {
             $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
-
-            $newOrderProducts = [];
+            $products = [];
             $sum = 0;
-
             foreach ($orderProducts as $orderProduct) {
                 $product = $this->productModel->getOneById($orderProduct->getProductId());
-                $orderProductData = [
+                $newOrderProducts = [
                     'name' => $product->getName(),
+                    'description' => $product->getDescription(),
                     'price' => $product->getPrice(),
+                    'image_url' => $product->getImageUrl(),
                     'amount' => $orderProduct->getAmount(),
-                    'totalSum' => $orderProduct->getAmount() * $product->getPrice(),
+                    'totalSum' => $product->getPrice() * $orderProduct->getAmount()
                 ];
-
-                $newOrderProducts[] = $orderProductData;
-                $sum += $orderProductData['totalSum'];
+                $products[] = $newOrderProducts;
+                $sum += $newOrderProducts['totalSum'];
             }
             $newUserOrders[] = [
                 'id' => $userOrder->getId(),
@@ -154,11 +153,10 @@ class OrderController
                 'contactPhone' => $userOrder->getContactPhone(),
                 'comment' => $userOrder->getComment(),
                 'address' => $userOrder->getAddress(),
-                'products' => $newOrderProducts,
                 'total' => $sum,
+                'products' => $products
             ];
         }
-
         require_once '../Views/user_orders.php';
     }
 }

@@ -6,46 +6,50 @@
 </head>
 <body>
 <a href="/catalog" class="back-btn">Перейти в каталог</a>
-    <h1>Мои заказы</h1>
-    <div class="order-container">
-            <?php foreach ($newUserOrders as $newUserOrder): ?>
-                <div class="order-card">
-                    <h2>Заказ № <?php echo $newUserOrder['id']; ?></h2>
-                    <p><?php echo $newUserOrder['contactName']; ?></p>
-                    <p><?php echo $newUserOrder['contactPhone']; ?></p>
-                    <p><?php echo $newUserOrder['comment']; ?></p>
-                    <p><?php echo $newUserOrder['address']; ?></p>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Наименование</th>
-                            <th>Количество</th>
-                            <th>Стоимость</th>
-                            <th>Сумма</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($newUserOrder['products'] as $newOrderProduct): ?>
-                                <tr>
-                                    <td><?php echo $newOrderProduct['name']?></td>
-                                    <td><?php echo $newOrderProduct['amount']?></td>
-                                    <td><?php echo $newOrderProduct['price']?></td>
-                                    <td><?php echo $newOrderProduct['totalSum']?></td>
-                                </tr>
-                            <? endforeach; ?>
-                        </tbody>
-                    </table>
-                    <p>Сумма заказа <?php echo $newUserOrder['total'];?></p>
-                </div>
-            <? endforeach; ?>
-    </div>
+<h1>Мои заказы</h1>
+<div class="order-container">
+    <?php foreach ($newUserOrders as $userOrder): ?>
+        <div class="order-card">
+            <h2>Заказ № <?php echo $userOrder['id']; ?></h2>
+            <p><?php echo $userOrder['contactName']; ?></p>
+            <p><?php echo $userOrder['contactPhone']; ?></p>
+            <p><?php echo $userOrder['comment']; ?></p>
+            <p><?php echo $userOrder['address']; ?></p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Наименование</th>
+                    <th>Количество</th>
+                    <th>Стоимость</th>
+                    <th>Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($userOrder['products'] as $orderProduct): ?>
+                    <tr>
+                        <td>
+                            <img src="<?php echo $orderProduct['image_url']; ?>" alt="Продукт" class="product-image">
+                        </td>
+                        <td><?php echo $orderProduct['name']; ?></td>
+                        <td><?php echo $orderProduct['amount']; ?></td>
+                        <td><?php echo $orderProduct['price']; ?> руб.</td>
+                        <td><?php echo $orderProduct['totalSum']; ?> руб.</td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <p>Сумма заказа: <?php echo $userOrder['total']; ?> руб.</p>
+        </div>
+    <?php endforeach; ?>
+</div>
 </body>
 </html>
 
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: skyblue;
+        background-color: #f0f8ff;
         margin: 0;
         padding: 0;
         color: #333;
@@ -53,7 +57,7 @@
 
     .back-btn {
         display: inline-block;
-        background-color: plum;
+        background-color: #8e44ad;
         color: #fff;
         padding: 10px 20px;
         text-align: center;
@@ -65,7 +69,7 @@
     }
 
     .back-btn:hover {
-        background-color: #2980b9;
+        background-color: #6c3483;
     }
 
     h1 {
@@ -117,7 +121,7 @@
     }
 
     table th {
-        background-color: plum;
+        background-color: #8e44ad;
         color: white;
     }
 
@@ -125,9 +129,17 @@
         background-color: #f0f8ff;
     }
 
-    .order-card p.total {
+    .total {
         font-size: 18px;
         color: #27ae60;
         font-weight: bold;
+        text-align: right;
+    }
+
+    .product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
     }
 </style>
