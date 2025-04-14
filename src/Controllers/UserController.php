@@ -4,25 +4,23 @@ namespace Controllers;
 
 use Model\User;
 
-class UserController
+class UserController extends BaseController
 {
     private User $userModel;
 
     public function __construct()
     {
+        parent::__construct();
         $this->userModel = new User();
     }
-
     public function getRegistrate()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        if (isset($_SESSION['userId'])) {
+        if ($this->authService->check()) {
             header("Location: /catalog");
+            exit();
+        } else {
+            require_once '../Views/registration_form.php';
         }
-        require_once '../Views/registration_form.php';
     }
 
     public function registrate()
@@ -75,7 +73,6 @@ class UserController
             $errors['email'] = "Email должен быть заполнен.";
         }
 
-
         if (isset($data['psw'])) {
             $password = $data['psw'];
             if (strlen($password) < 8) {
@@ -99,81 +96,59 @@ class UserController
 
     public function getLogin()
     {
-        require_once '../Views/login_form.php';
+        if ($this->authService->check()) {
+            header("Location: /catalog");
+            exit();
+        } else {
+            require_once '../Views/login_form.php';
+        }
     }
 
     public function login()
     {
-        $errors = $this->validateLogin($_POST);
+        $data = $_POST;
+        $errors = $this->validateLogin($data);
 
         if (empty($errors)) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            $user = $this->userModel->getUsernameByEmail($username);
-            if ($user === null) {
-                $errors['username'] = "Неверный email или пароль.";
+            $result = $this->authService->auth($data['email'], $data['password']);
+            if ($result) {
+                header("Location: /catalog");
+                exit;
             } else {
-                $passwordDb = $user->getPassword();
-                if (password_verify($password, $passwordDb)) {
-                    if (session_status() !== PHP_SESSION_ACTIVE) {
-                        session_start();
-                    }
-                    $_SESSION['userId'] = $user->getId();
-
-                    header("Location: /catalog");
-                    exit;
-                } else {
-                    $errors['username'] = "Неверный email или пароль.";
-                }
+                $errors['authorization'] = "Неверный email или пароль.";
             }
         }
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['username'] = $_POST['username'];
-            header('Location: /login');
-            exit;
-        }
+        require_once '../Views/login_form.php';
     }
 
     private function validateLogin(array $data): array
     {
         $errors = [];
 
-        if (!isset($data['username'])) {
-            $errors['username'] = "Email не может быть пустым.";
-        } elseif (!filter_var($data['username'], FILTER_VALIDATE_EMAIL)) {
-            $errors['username'] = "Некорректный email.";
+        if (!isset($data['email'])) {
+            $errors['authorization'] = "Email не может быть пустым.";
+        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['authorization'] = "Некорректный email.";
         }
 
         if (!isset($data['password'])) {
-            $errors['password'] = "Пароль не может быть пустым.";
+            $errors['authorization'] = "Пароль не может быть пустым.";
         }
-
         return $errors;
     }
 
     public function logout()
     {
-        session_start();
-
-        session_unset();
-
-        session_destroy();
-
+        $this->authService->logout();
         header("Location: /login");
         exit;
     }
 
     public function showProfile()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        if (isset($_SESSION['userId'])) {
-            $userId = $_SESSION['userId'];
-            $user = $this->userModel->getByUserId($userId);
+        if ($this->authService->check()) {
+            $user = $this->authService->getCurrentUser();
+            $user = $this->userModel->getByUserId($user->getId());
 
             if ($user) {
                 require_once '../Views/profile_page.php';
@@ -193,40 +168,30 @@ class UserController
 
     public function editProfile()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
+        if ($this->authService->check()) {
+            $errors = $this->validateEditProfile($_POST);
 
-        if (!isset($_SESSION['userId'])) {
-            header('Location: /login');
-            exit;
-        }
+            if (empty($errors)) {
+                $name = $_POST['name'];
+                $email = $_POST['email'];
+                $new_password = isset($_POST['new_password']) ? $_POST['new_password'] : null;
 
-        $errors = $this->validateEditProfile($_POST);
+                $userId = $_SESSION['userId'];
 
-        if (empty($errors)) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $new_password = isset($_POST['new_password']) ? $_POST['new_password'] : null;
+                if ($new_password) {
+                    $this->userModel->updateDataWhereNewPswById($name, $email, $new_password, $userId);
+                } else {
+                    $this->userModel->updateDataWhereOldPswById($name, $email, $userId);
+                }
 
-            $userId = $_SESSION['userId'];
-
-            if ($new_password) {
-                $this->userModel->updateDataWhereNewPswById($name, $email, $new_password, $userId);
-            } else {
-                $this->userModel->updateDataWhereOldPswById($name, $email, $userId);
+                header('Location: /profile');
+                exit;
             }
-
-            header('Location: /profile');
-            exit;
-        } else {
-            echo "<div class='error-messages'>";
-            foreach ($errors as $error) {
-                echo "<p style='color:red;'>$error</p>";
-            }
-        }
-        require_once '../Views/edit_profile_form.php';
+            require_once '../Views/edit_profile_form.php';
+        } header('Location: /login');
+        exit;
     }
+
     private function validateEditProfile(array $data): array
     {
         $errors = [];

@@ -18,7 +18,7 @@
                         <p class="card-text text-muted"><?php echo $product->getName(); ?></p>
                         <a href="#"><h5 class="card-title"><?php echo $product->getDescription(); ?></h5></a>
                         <div class="card-footer">
-                            <?php echo $product->getPrice(); ?>
+                            <span class="price"><?php echo $product->getPrice(); ?></span>
                         </div>
                     </div>
                 </a>
@@ -39,6 +39,31 @@
         <?php endforeach; ?>
 
 <style>
+    .amount-controls button {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin: 0 5px;
+    }
+
+    .amount-controls button:hover {
+        background-color: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .amount-controls button:active {
+        background-color: #d35400;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f8f9fa;
@@ -54,7 +79,7 @@
     .card {
         border-radius: 10px;
         transition: all 0.3s ease;
-        border: 2px solid #f39c12;
+        border: 2px solid #e74c3c;
         overflow: hidden;
         background-color: #fff;
     }
@@ -72,14 +97,17 @@
 
     .card-text {
         font-size: 1rem;
-        color: #7f8c8d;
+        color: black;
         margin-bottom: 1rem;
     }
 
     .price {
-        font-size: 1.3rem;
-        color: #f39c12; /* Яркий желтый цвет для цены */
+        font-size: 1.8rem;
+        color: #e74c3c;
         font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        padding: 5px 0;
+        display: inline-block;
     }
 
     .btn-danger {

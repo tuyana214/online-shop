@@ -30,10 +30,10 @@ class User extends Model
         return $obj;
     }
 
-    public function getUsernameByEmail(string $username): self|null
+    public function getUsernameByEmail(string $email): self|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute([':email' => $username]);
+        $stmt->execute([':email' => $email]);
         $user = $stmt->fetch();
 
         if ($user === false) {

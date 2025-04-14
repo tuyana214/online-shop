@@ -6,10 +6,7 @@ use Model\Cart;
 use Model\Product;
 use Model\UserProduct;
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-class CartController
+class CartController extends BaseController
 {
     private Cart $cartModel;
     private Product $productModel;
@@ -17,43 +14,39 @@ class CartController
 
     public function __construct()
     {
+        parent::__construct();
         $this->cartModel = new Cart();
         $this->productModel = new Product();
         $this->userProductModel = new UserProduct();
-
-        if (!isset($_SESSION['userId'])) {
-            header("Location: /login");
-            exit();
-        }
     }
-
     public function getCart()
     {
-        $userId = $_SESSION['userId'];
+        if ($this->authService->check()) {
+            $user = $this->authService->getCurrentUser();
+            $userProducts = $this->cartModel->getAllUserProductsByUserId($user->getId());
 
-        $userProducts = $this->cartModel->getProductsByUserId($userId);
+            $products = [];
+            $totalPrice = 0;
 
-        $products = [];
-        $totalPrice = 0;
+            foreach ($userProducts as $userProduct) {
+                $productId = $userProduct->getProductId();
 
-        foreach ($userProducts as $userProduct) {
-            $productId = $userProduct->getProductId();
+                $product = $this->productModel->getOneById($productId);
 
-            $product = $this->productModel->getOneById($productId);
-
-            if ($product) {
-                $productData = [
-                    'id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'description' => $product->getDescription(),
-                    'price' => $product->getPrice(),
-                    'image_url' => $product->getImageUrl(),
-                    'amount' => $userProduct->getAmount(),
-                    'total_price' => $product->getPrice() * $userProduct->getAmount(),
-                ];
-                $products[] = $productData;
-                $amount = $productData['amount'];
-                $totalPrice += $productData['total_price'];
+                if ($product) {
+                    $productData = [
+                        'id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'description' => $product->getDescription(),
+                        'price' => $product->getPrice(),
+                        'image_url' => $product->getImageUrl(),
+                        'amount' => $userProduct->getAmount(),
+                        'total_price' => $product->getPrice() * $userProduct->getAmount(),
+                    ];
+                    $products[] = $productData;
+                    $amount = $productData['amount'];
+                    $totalPrice += $productData['total_price'];
+                }
             }
         }
         require_once '../Views/cart_page.php';
@@ -65,27 +58,23 @@ class CartController
     }
     public function addProduct(): void
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $errors = $this->validateAddProduct($_POST);
 
         if (empty($errors)) {
-            $userId = $_SESSION['userId'];
+            $user = $this->authService->getCurrentUser();
             $productId = $_POST['product_id'];
             $amount = $_POST['amount'];
 
-            $data = $this->userProductModel->getById($userId, $productId);
+            $userProduct = $this->userProductModel->getById($user->getId(), $productId);
 
-            if ($data === null) {
-                $this->productModel->insertProduct($userId, $productId, $amount);
+            if ($userProduct === null) {
+                $this->productModel->insertProduct($user->getId(), $productId, $amount);
             } else {
-                $amount = $data->getAmount() + $amount;
-                $this->productModel->updateProduct($amount, $userId, $productId);
+                $newAmount = $userProduct->getAmount() + $amount;
+                $this->cartModel->updateProduct($newAmount, $user->getId(), $productId);
             }
             header("Location: /catalog");
-        } echo "There were errors: " . implode(', ', $errors);
+        }
     }
 
     private function validateAddProduct(array $data): array
@@ -117,23 +106,19 @@ class CartController
 
     public function removeProduct()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $userId = $_SESSION['userId'];
+        $user = $this->authService->getCurrentUser();
         $productId = $_POST['product_id'];
 
-        $data = $this->userProductModel->getById($userId, $productId);
+        $data = $this->userProductModel->getById($user->getId(), $productId);
 
         if ($data !== null) {
             $amount = $data->getAmount();
 
             if ($amount > 1) {
                 $newAmount = $amount - 1;
-                $this->cartModel->updateProduct($newAmount, $userId, $productId);
+                $this->cartModel->updateProduct($newAmount, $user->getId(), $productId);
             } else {
-                $this->cartModel->deleteProduct($userId, $productId);
+                $this->cartModel->deleteProduct($user->getId(), $productId);
             }
         }
         header("Location: /catalog");

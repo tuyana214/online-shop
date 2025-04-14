@@ -32,7 +32,18 @@
                             <label for="amount_<?php echo $product['id']; ?>"><b>Количество:</b></label>
                             <input type="number" id="amount_<?php echo $product['id']; ?>" name="amount[<?php echo $product['id']; ?>]" value="<?php echo $product['amount']; ?>" min="1" required>
 
-                            <a href="/cart?remove=<?php echo $product['id']; ?>" class="remove-btn">Удалить</a>
+                            <div class="amount-controls">
+                                <form action="/remove-product" method="POST" style="display: inline;">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <input type="hidden" name="amount" value="1">
+                                    <button type="submit">-</button>
+                                </form>
+                                <form action="/add-product" method="POST" style="display: inline;">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <input type="hidden" name="amount" value="1">
+                                    <button type="submit">+</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -48,7 +59,35 @@
 </html>
 
 <style>
-    /* Общие стили */
+    .amount-controls button {
+        background-color: #f39c12;
+        color: #fff;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin: 5px;
+    }
+
+    .amount-controls button:hover {
+        background-color: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .amount-controls button:active {
+        background-color: #d35400;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    .amount-controls {
+        margin-top: 10px;
+    }
+
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f8f9fa;
@@ -57,7 +96,6 @@
         padding: 0;
     }
 
-    /* Шапка страницы */
     header {
         background-color: #2c3e50;
         padding: 15px;
@@ -74,7 +112,6 @@
         color: #f39c12;
     }
 
-    /* Заголовок корзины */
     main h1 {
         font-size: 2.5rem;
         color: #e74c3c;
@@ -82,7 +119,6 @@
         margin-top: 40px;
     }
 
-    /* Блок с товарами в корзине */
     .cart-items {
         display: flex;
         flex-wrap: wrap;
@@ -90,7 +126,6 @@
         margin: 0 20px;
     }
 
-    /* Элемент товара */
     .cart-item {
         background-color: #fff;
         border-radius: 10px;
@@ -107,14 +142,12 @@
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* Изображение товара */
     .cart-item-img {
         width: 100%;
         height: 250px;
         object-fit: cover;
     }
 
-    /* Информация о товаре */
     .cart-item-info {
         padding: 15px;
         text-align: center;
@@ -130,7 +163,6 @@
         color: #7f8c8d;
     }
 
-    /* Действия с товаром */
     .cart-item-actions {
         display: flex;
         flex-direction: column;
@@ -166,7 +198,6 @@
         color: #c0392b;
     }
 
-    /* Блок с итоговой суммой */
     .cart-total {
         padding: 20px;
         background-color: #2c3e50;

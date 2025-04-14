@@ -41,14 +41,6 @@ class Product extends Model
         $stmt->execute(['userId' => $userId, 'product_id' => $productId, 'amount' => $amount]);
     }
 
-    public function updateProduct(int $amount, int $userId, int $productId)
-    {
-        $stmt = $this->pdo->prepare("UPDATE user_products SET amount = :amount WHERE user_id = :user_id AND product_id = :product_id");
-        $result = $stmt->execute(['amount' => $amount, 'user_id' => $userId, 'product_id' => $productId]);
-
-        return $result;
-    }
-
     public function getProductId(int $productId): self|null
     {
         $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :product_id");

@@ -10,7 +10,7 @@ class Cart extends Model
     private int $userId;
     private int $productId;
     private int $amount;
-    public function getProductsByUserId(int $userId): array
+    public function getAllUserProductsByUserId(int $userId): array
     {
         $userId = $_SESSION['userId'];
         $stmt = $this->pdo->query("SELECT * FROM user_products WHERE user_id = {$userId}");
@@ -30,7 +30,6 @@ class Cart extends Model
 
             $productsArray[] = $obj;
         }
-
         return $productsArray;
     }
 
