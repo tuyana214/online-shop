@@ -31,7 +31,7 @@ class AuthService
 
     public function auth(string $email, string $password): bool
     {
-        $user = $this->userModel->getUsernameByEmail($email);
+        $user = $this->userModel->getByEmail($email);
         if (!$user) {
             return false;
         } else {

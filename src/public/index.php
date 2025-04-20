@@ -29,4 +29,6 @@ $app->get('/create-order', OrderController::class, 'getCheckoutForm');
 $app->post('/create-order', OrderController::class, 'handleCheckout');
 $app->get('/confirm-order', OrderController::class, 'confirm');
 $app->get('/orders', OrderController::class, 'getAllOrders');
+$app->post('/product', CartController::class, 'showProduct');
+$app->post('/add-review', CartController::class, 'addReview');
 $app->run();

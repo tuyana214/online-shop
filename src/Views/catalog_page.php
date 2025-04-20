@@ -10,9 +10,6 @@
         <?php foreach ($products as $product): ?>
             <div class="card text-center">
                 <a href="#">
-                    <div class="card-header">
-                        Hit!
-                    </div>
                     <img class="card-img-top" src="<?php echo $product->getImageUrl(); ?>" alt="Card image">
                     <div class="card-body">
                         <p class="card-text text-muted"><?php echo $product->getName(); ?></p>
@@ -34,6 +31,10 @@
                     <input type="hidden" name="product_id" value="<?php echo $product->getId(); ?>">
                     <input type="hidden" name="amount" value="1">
                     <button type="submit">+</button>
+                </form>
+                <form action="/product" method="POST" style="display: inline;">
+                    <input type="hidden" name="product_id" value="<?php echo $product->getId(); ?>">
+                    <button type="submit">Подробнее</button>
                 </form>
             </div>
         <?php endforeach; ?>

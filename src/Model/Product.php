@@ -11,9 +11,14 @@ class Product extends Model
     private string $description;
     private int $price;
     private string $image_url;
+
+    protected function getTableName(): string
+    {
+        return 'products';
+    }
     public function getAll(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM products");
+        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()}");
         $products = $stmt->fetchAll();
 
         if ($products === false) {
@@ -35,15 +40,9 @@ class Product extends Model
         return $productsArray;
     }
 
-    public function insertProduct(int $userId, int $productId, int $amount)
-    {
-        $stmt = $this->pdo->prepare("INSERT INTO user_products (user_id, product_id, amount) VALUES (:userId, :product_id, :amount)");
-        $stmt->execute(['userId' => $userId, 'product_id' => $productId, 'amount' => $amount]);
-    }
-
     public function getProductId(int $productId): self|null
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM products WHERE id = :product_id");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :product_id");
         $stmt->execute(['product_id' => $productId]);
         $product = $stmt->fetch();
 
@@ -63,7 +62,7 @@ class Product extends Model
 
     public function getOneById(int $productId): self|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM products WHERE id = $productId");
+        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()} WHERE id = $productId");
         $product = $stmt->fetch();
 
         if ($product === false) {
@@ -82,7 +81,7 @@ class Product extends Model
 
     public function getProductPrice(int $productId)
     {
-        $stmt = $this->pdo->prepare("SELECT price FROM products WHERE id = :productId");
+        $stmt = $this->pdo->prepare("SELECT price FROM {$this->getTableName()} WHERE id = :productId");
         $stmt->execute(['productId' => $productId]);
         $product = $stmt->fetch();
 

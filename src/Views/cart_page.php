@@ -22,8 +22,8 @@
                         <div class="cart-item-details">
                             <img src="<?php echo $product['image_url']; ?>" alt="Изображение товара" class="cart-item-img">
                             <div class="cart-item-info">
-                                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                                <p><?php echo htmlspecialchars($product['description']); ?></p>
+                                <h3><?php echo $product['name']; ?></h3>
+                                <p><?php echo $product['description']; ?></p>
                                 <p><strong>Цена: </strong><?php echo number_format($product['price'], 2, ',', ' ') . ' руб.'; ?></p>
                             </div>
                         </div>

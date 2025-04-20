@@ -2,28 +2,28 @@
 
 namespace Controllers;
 
-use Model\Cart;
-use Model\Product;
 use Model\UserProduct;
+use Model\Product;
+use Model\Review;
 
 class CartController extends BaseController
 {
-    private Cart $cartModel;
     private Product $productModel;
     private UserProduct $userProductModel;
+    private Review $reviewModel;
 
     public function __construct()
     {
         parent::__construct();
-        $this->cartModel = new Cart();
         $this->productModel = new Product();
         $this->userProductModel = new UserProduct();
+        $this->reviewModel = new Review();
     }
     public function getCart()
     {
         if ($this->authService->check()) {
             $user = $this->authService->getCurrentUser();
-            $userProducts = $this->cartModel->getAllUserProductsByUserId($user->getId());
+            $userProducts = $this->userProductModel->getAllUserProductsByUserId($user->getId());
 
             $products = [];
             $totalPrice = 0;
@@ -68,10 +68,10 @@ class CartController extends BaseController
             $userProduct = $this->userProductModel->getById($user->getId(), $productId);
 
             if ($userProduct === null) {
-                $this->productModel->insertProduct($user->getId(), $productId, $amount);
+                $this->userProductModel->insertProduct($user->getId(), $productId, $amount);
             } else {
                 $newAmount = $userProduct->getAmount() + $amount;
-                $this->cartModel->updateProduct($newAmount, $user->getId(), $productId);
+                $this->userProductModel->updateProduct($newAmount, $user->getId(), $productId);
             }
             header("Location: /catalog");
         }
@@ -116,12 +116,63 @@ class CartController extends BaseController
 
             if ($amount > 1) {
                 $newAmount = $amount - 1;
-                $this->cartModel->updateProduct($newAmount, $user->getId(), $productId);
+                $this->userProductModel->updateProduct($newAmount, $user->getId(), $productId);
             } else {
-                $this->cartModel->deleteProduct($user->getId(), $productId);
+                $this->userProductModel->deleteProduct($user->getId(), $productId);
             }
         }
         header("Location: /catalog");
         exit();
+    }
+
+    public function showProduct()
+    {
+        if ($this->authService->check()) {
+            $productId = $_POST['product_id'];
+            if ($productId) {
+                $product = $this->productModel->getOneById($productId);
+                if ($product) {
+                    $reviews = $this->reviewModel->getByProductId($productId);
+                    $totalRating = 0;
+                    $reviewCount = count($reviews);
+                    if ($reviewCount > 0) {
+                        foreach ($reviews as $review) {
+                            $totalRating += $review->getRating();
+                        }
+                        $averageRating = round($totalRating / $reviewCount, 1);
+                    } else {
+                        $averageRating = 0;
+                    }
+
+                    $products = [
+                        'id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'description' => $product->getDescription(),
+                        'price' => $product->getPrice(),
+                        'image_url' => $product->getImageUrl(),
+                        'reviews' => $reviews,
+                        'average_rating' => $averageRating
+                    ];
+
+                    require_once '../Views/product_page.php';
+                }
+            }
+        }
+    }
+
+
+    public function addReview()
+    {
+        if ($this->authService->check()) {
+            $productId = $_POST['product_id'];
+            $author = $_POST['author'];
+            $rating = $_POST['rating'];
+            $comment = $_POST['comment'];
+
+            $this->reviewModel->createReview($productId, $author, $rating, $comment);
+
+            header("Location: /catalog");
+            exit();
+        }
     }
 }

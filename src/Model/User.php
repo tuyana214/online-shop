@@ -11,28 +11,14 @@ class User extends Model
     private string $email;
     private string $password;
 
-    public function getByEmail(string $email): self|null
+    protected function getTableName(): string
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute([':email' => $email]);
-        $user = $stmt->fetch();
-
-        if ($user === false) {
-            return null;
-        }
-
-        $obj = new self();
-        $obj->id = $user["id"];
-        $obj->name = $user["name"];
-        $obj->email = $user["email"];
-        $obj->password = $user["password"];
-
-        return $obj;
+        return 'users';
     }
 
-    public function getUsernameByEmail(string $email): self|null
+    public function getByEmail(string $email): self|null
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE email = :email");
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch();
 
@@ -51,7 +37,7 @@ class User extends Model
 
     public function getByUserId(int $userId): self|null
     {
-        $stmt = $this->pdo->query('SELECT * FROM users WHERE id = ' . $userId);
+        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()} WHERE id = " . $userId);
         $user = $stmt->fetch();
 
         if ($user === false) {
@@ -69,7 +55,7 @@ class User extends Model
 
     public function updateDataWhereNewPswById(string $name, string $email, string $new_password, int $userId)
     {
-        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE {$this->getTableName()} SET name = :name, email = :email, password = :password WHERE id = :id");
         $user = $stmt->execute([':name' => $name, ':email' => $email, ':password' => password_hash($new_password, PASSWORD_DEFAULT), ':id' => $userId]);
 
         return $user;
@@ -77,7 +63,7 @@ class User extends Model
 
     public function updateDataWhereOldPswById(string $name, string $email, int $userId)
     {
-        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, email = :email WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE {$this->getTableName()} SET name = :name, email = :email WHERE id = :id");
         $user = $stmt->execute([':name' => $name, ':email' => $email, ':id' => $userId]);
 
         return $user;
@@ -85,7 +71,7 @@ class User extends Model
 
     public function insertData(string $name, string $email, string $password)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (name, email, password) VALUES (:name, :email, :password)");
         $stmt->execute([':name' => $name, ':email' => $email, ':password' => $password]);
     }
 
