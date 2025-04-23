@@ -43,10 +43,10 @@ class Review extends Model
         return $reviewsArray;
     }
 
-    public function createReview(int $productId, string $author, string $rating, string $comment)
+    public function createReview(int $productId, string $name, string $rating, string $comment)
     {
         $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (product_id, name, rating, comment, created_at) VALUES (:product_id, :name, :rating, :comment, NOW())");
-        $stmt->execute([$productId, $author, $rating, $comment]);
+        $stmt->execute([$productId, $name, $rating, $comment]);
     }
 
     public function getId(): int

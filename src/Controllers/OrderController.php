@@ -2,11 +2,13 @@
 
 namespace Controllers;
 
+use DTO\OrderCreateDTO;
 use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
 use Model\UserProduct;
-use Service\AuthService;
+use Request\HandleCheckoutRequest;
+use Service\OrderService;
 
 class OrderController extends BaseController
 {
@@ -14,6 +16,7 @@ class OrderController extends BaseController
     private UserProduct $userProductModel;
     private OrderProduct $orderProductModel;
     private Product $productModel;
+    private OrderService $orderService;
     public function __construct()
     {
         parent::__construct();
@@ -21,35 +24,21 @@ class OrderController extends BaseController
         $this->userProductModel = new UserProduct();
         $this->orderProductModel = new OrderProduct();
         $this->productModel = new Product();
+        $this->orderService = new OrderService();
     }
     public function getCheckoutForm()
     {
             require_once '../Views/order_form.php';
     }
 
-    public function handleCheckout()
+    public function handleCheckout(HandleCheckoutRequest $request)
     {
         if ($this->authService->check()) {
-            $errors = $this->validateOrder($_POST);
-
+            $errors = $request->validate();
+            $user = $this->authService->getCurrentUser();
             if (empty($errors)) {
-                $contactName = $_POST['contact_name'];
-                $contactPhone = $_POST['contact_phone'];
-                $comment = $_POST['comment'];
-                $address = $_POST['address'];
-                $user = $this->authService->getCurrentUser();
-
-                $orderId = $this->orderModel->create($contactName, $contactPhone, $comment, $address, $user->getId());
-                $userProducts = $this->userProductModel->getAllByUserId($user->getId());
-
-                foreach ($userProducts as $userProduct) {
-                    $productId = $userProduct->getProductId();
-                    $amount = $userProduct->getAmount();
-
-                    $this->orderProductModel->create($orderId, $productId, $amount);
-                }
-                $this->userProductModel->deleteByUserId($user->getId());
-
+                $dto = new OrderCreateDTO($request->getContactName(), $request->getContactPhone(), $request->getComment(), $request->getAddress(), $user);
+                $this->orderService->create($dto);
                 header ("Location: /confirm-order");
                 exit;
             } else {
@@ -59,30 +48,6 @@ class OrderController extends BaseController
             header('Location: /login');
             exit();
         }
-    }
-
-    private function validateOrder(array $data): array
-    {
-        $errors = [];
-
-        if (isset($data['contact_name'])) {
-            $name = $data['contact_name'];
-            if (strlen($name) < 2) {
-                $errors['contact_name'] = "Имя должно содержать более 2 символов.";
-            }
-        } else {
-            $errors['contact_name'] = "Имя должно быть заполнено.";
-        }
-
-        if (!isset($data['contact_phone'])) {
-            $errors['contact_phone'] = "Номер телефона должен быть заполнен";
-        }
-
-        if (!isset($data['address'])) {
-            $errors['address'] = "Адрес должен быть заполнен";
-        }
-
-        return $errors;
     }
 
     public function confirm()

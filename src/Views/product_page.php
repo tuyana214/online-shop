@@ -21,7 +21,7 @@
         <?php if (!empty($products['reviews'])): ?>
             <?php foreach ($products['reviews'] as $review): ?>
                 <div class="review">
-                    <span class="review-author"><?php echo $review->getName(); ?></span>
+                    <span class="review-name"><?php echo $review->getName(); ?></span>
                     <p class="review-rating">"<?php echo $review->getRating(); ?>"</p>
                     <p class="review-comment">"<?php echo $review->getComment(); ?>"</p>
                     <p class="review-created-at">"<?php echo $review->getCreatedAt(); ?>"</p>
@@ -30,6 +30,7 @@
         <?php else: ?>
             <p>На данный момент отзывов нет.</p>
         <?php endif; ?>
+        <a href="/catalog" class="back-to-catalog">Вернуться в каталог</a>
     </div>
 </div>
 
@@ -38,8 +39,8 @@
     <form action="/add-review" method="POST">
         <input type="hidden" name="product_id" value="<?php echo $products['id']; ?>">
         <div>
-            <label for="author">Ваше имя:</label>
-            <input type="text" id="author" name="author" required>
+            <label for="name">Ваше имя:</label>
+            <input type="text" id="name" name="name" required>
         </div>
         <div>
             <label for="rating">Оценка:</label>
@@ -120,7 +121,7 @@
         position: relative;
     }
 
-    .review-author {
+    .review-name {
         font-weight: bold;
         color: #333;
         font-size: 18px;

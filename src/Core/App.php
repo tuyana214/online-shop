@@ -6,6 +6,9 @@ use Controllers\UserController;
 use Controllers\ProductController;
 use Controllers\CartController;
 use Controllers\OrderController;
+use Request\AddProductRequest;
+use Request\EditProfileRequest;
+use Request\LoginRequest;
 
 class App
 {
@@ -19,35 +22,43 @@ class App
             $routeMethods = $this->routes[$requestUri];
             if(isset($routeMethods[$requestMethod])) {
                 $handler = $routeMethods[$requestMethod];
-
                 $class = $handler['class'];
                 $method = $handler['method'];
-
                 $controller = new $class();
-                $controller->$method();
+
+                $requestClass = new $handler['request'];
+                if ($requestClass) {
+                    $request = new $requestClass($_POST);
+                    $controller->$method($request);
+                } else {
+                    $controller->$method();
+                }
+
+
             } else {
                 echo "$requestMethod не поддерживается для $requestUri";
             }
         } else {
             http_response_code(404);
             require_once '../Views/404.php';
-
         }
     }
 
-    public function get(string $route, string $className, string $method)
+    public function get(string $route, string $className, string $method, string $requestClass = null)
     {
         $this->routes[$route]['GET'] = [
             'class' => $className,
-            'method' => $method
+            'method' => $method,
+            'request' => $requestClass
         ];
     }
 
-    public function post(string $route, string $className, string $method)
+    public function post(string $route, string $className, string $method, string $requestClass = null)
     {
         $this->routes[$route]['POST'] = [
             'class' => $className,
-            'method' => $method
+            'method' => $method,
+            'request' => $requestClass
         ];
     }
 }
