@@ -32,14 +32,6 @@ class AddProductRequest
         } else {
             $errors['product_id'] = "Id продукта должен быть указан";
         }
-
-        if (isset($data['amount'])) {
-            if ($data['amount'] <= 0) {
-                $errors['amount'] = "Количество не может быть 0";
-            }
-        } else {
-            $errors['amount'] = "Количество должно быть указано";
-        }
         return $errors;
     }
 }

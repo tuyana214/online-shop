@@ -2,14 +2,6 @@
 
 namespace Core;
 
-use Controllers\UserController;
-use Controllers\ProductController;
-use Controllers\CartController;
-use Controllers\OrderController;
-use Request\AddProductRequest;
-use Request\EditProfileRequest;
-use Request\LoginRequest;
-
 class App
 {
     private array $routes = [];
@@ -26,15 +18,14 @@ class App
                 $method = $handler['method'];
                 $controller = new $class();
 
-                $requestClass = new $handler['request'];
+                $requestClass = $handler['request'];
+
                 if ($requestClass) {
                     $request = new $requestClass($_POST);
                     $controller->$method($request);
                 } else {
                     $controller->$method();
                 }
-
-
             } else {
                 echo "$requestMethod не поддерживается для $requestUri";
             }

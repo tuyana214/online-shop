@@ -8,13 +8,13 @@
 <a href="/catalog" class="back-btn">Перейти в каталог</a>
 <h1>Мои заказы</h1>
 <div class="order-container">
-    <?php foreach ($newUserOrders as $userOrder): ?>
+    <?php foreach ($userOrders as $userOrder): ?>
         <div class="order-card">
-            <h2>Заказ № <?php echo $userOrder['id']; ?></h2>
-            <p><?php echo $userOrder['contactName']; ?></p>
-            <p><?php echo $userOrder['contactPhone']; ?></p>
-            <p><?php echo $userOrder['comment']; ?></p>
-            <p><?php echo $userOrder['address']; ?></p>
+            <h2>Заказ № <?php echo $userOrder->getId(); ?></h2>
+            <p><?php echo $userOrder->getContactName(); ?></p>
+            <p><?php echo $userOrder->getContactPhone(); ?></p>
+            <p><?php echo $userOrder->getComment(); ?></p>
+            <p><?php echo $userOrder->getAddress(); ?></p>
             <table>
                 <thead>
                 <tr>
@@ -26,20 +26,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($userOrder['products'] as $orderProduct): ?>
+                <?php foreach ($userOrder->getOrderProducts() as $orderProduct): ?>
                     <tr>
                         <td>
-                            <img src="<?php echo $orderProduct['image_url']; ?>" alt="Продукт" class="product-image">
+                            <img src="<?php echo $orderProduct->getProduct()->getImageUrl(); ?>" alt="Продукт" class="product-image">
                         </td>
-                        <td><?php echo $orderProduct['name']; ?></td>
-                        <td><?php echo $orderProduct['amount']; ?></td>
-                        <td><?php echo $orderProduct['price']; ?> руб.</td>
-                        <td><?php echo $orderProduct['totalSum']; ?> руб.</td>
+                        <td><?php echo $orderProduct->getProduct()->getName(); ?></td>
+                        <td><?php echo $orderProduct->getAmount(); ?></td>
+                        <td><?php echo $orderProduct->getProduct()->getPrice(); ?> руб.</td>
+                        <td><?php echo $orderProduct->getSum(); ?> руб.</td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <p>Сумма заказа: <?php echo $userOrder['total']; ?> руб.</p>
+            <p>Сумма заказа: <?php echo $userOrder->getSum(); ?> руб.</p>
         </div>
     <?php endforeach; ?>
 </div>

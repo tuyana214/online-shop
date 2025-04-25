@@ -12,6 +12,8 @@ class Order extends Model
     private string $comment;
     private int $userId;
     private string $address;
+    private int $sum;
+    private array $orderProducts = [];
 
     protected function getTableName(): string
     {
@@ -69,6 +71,10 @@ class Order extends Model
         return $ordersArray;
     }
 
+    public function setOrderProducts(array $orderProducts): void {
+        $this->orderProducts = $orderProducts;
+    }
+
     public function getId(): int
     {
         return $this->id;
@@ -97,5 +103,20 @@ class Order extends Model
     public function getAddress(): string
     {
         return $this->address;
+    }
+
+    public function getSum(): int
+    {
+        return $this->sum;
+    }
+
+    public function setSum(int $sum): void
+    {
+        $this->sum = $sum;
+    }
+
+    public function getOrderProducts(): array
+    {
+        return $this->orderProducts;
     }
 }

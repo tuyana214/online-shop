@@ -9,6 +9,8 @@ class OrderProduct extends Model
     private int $orderId;
     private int $productId;
     private int $amount;
+    private Product $product;
+    private int $sum;
     protected function getTableName(): string
     {
         return 'order_products';
@@ -68,5 +70,25 @@ class OrderProduct extends Model
     public function getAmount(): int
     {
         return $this->amount;
+    }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getSum(): int
+    {
+        return $this->sum;
+    }
+
+    public function setSum(int $sum): void
+    {
+        $this->sum = $sum;
     }
 }

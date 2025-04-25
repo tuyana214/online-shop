@@ -10,31 +10,11 @@ class UserProduct extends Model
     private int $userId;
     private int $productId;
     private int $amount;
+    private Product $product;
+    private int $totalSum;
     protected function getTableName(): string
     {
         return 'user_products';
-    }
-    public function getAllUserProductsByUserId(int $userId): array
-    {
-        $userId = $_SESSION['userId'];
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()} WHERE user_id = {$userId}");
-        $products = $stmt->fetchAll();
-
-        if ($products === false) {
-            return [];
-        }
-
-        $productsArray = [];
-        foreach ($products as $product) {
-            $obj = new self();
-            $obj->id = $product["id"];
-            $obj->userId = $product["user_id"];
-            $obj->productId = $product["product_id"];
-            $obj->amount = $product["amount"];
-
-            $productsArray[] = $obj;
-        }
-        return $productsArray;
     }
 
     public function updateProduct(int $amount, int $userId, int $productId): bool
@@ -48,7 +28,7 @@ class UserProduct extends Model
         $stmt = $this->pdo->prepare("DELETE FROM {$this->getTableName()} WHERE user_id = {$userId} AND product_id = {$productId}");
         return $stmt->execute();
     }
-    public function getAllByUserId(int $userId): array
+    public function getAllUserProductsByUserId(int $userId): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE user_id = :user_id");
         $stmt->execute([':user_id' => $userId]);
@@ -122,4 +102,25 @@ class UserProduct extends Model
     {
         return $this->amount;
     }
+
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getTotalSum(): int
+    {
+        return $this->totalSum;
+    }
+
+    public function setTotalSum(int $totalSum): void
+    {
+        $this->totalSum = $totalSum;
+    }
+
 }

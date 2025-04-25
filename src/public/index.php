@@ -27,7 +27,7 @@ $app->post('/remove-product', CartController::class, 'decreaseProduct', \Request
 $app->get('/cart', CartController::class, 'getCart');
 $app->get('/create-order', OrderController::class, 'getCheckoutForm');
 $app->post('/create-order', OrderController::class, 'handleCheckout', \Request\HandleCheckoutRequest::class);
-$app->get('/confirm-order', OrderController::class, 'confirm');
+//$app->get('/confirm-order', OrderController::class, 'confirm');
 $app->get('/orders', OrderController::class, 'getAllOrders');
 $app->post('/product', ProductController::class, 'showProduct', \Request\ShowProductRequest::class);
 $app->post('/add-review', ProductController::class, 'addReview', \Request\AddReviewRequest::class);

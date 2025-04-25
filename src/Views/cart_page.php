@@ -12,34 +12,34 @@
 <main>
     <h1>Корзина</h1>
 
-    <?php if (empty($products)): ?>
+    <?php if (empty($userProducts)): ?>
         <p>Ваша корзина пуста.</p>
     <?php else: ?>
         <form action="/cart" method="POST">
             <div class="cart-items">
-                <?php foreach ($products as $product): ?>
+                <?php foreach ($userProducts as $userProduct): ?>
                     <div class="cart-item">
                         <div class="cart-item-details">
-                            <img src="<?php echo $product['image_url']; ?>" alt="Изображение товара" class="cart-item-img">
+                            <img src="<?php echo $userProduct->getProduct()->getImageUrl(); ?>" alt="Изображение товара" class="cart-item-img">
                             <div class="cart-item-info">
-                                <h3><?php echo $product['name']; ?></h3>
-                                <p><?php echo $product['description']; ?></p>
-                                <p><strong>Цена: </strong><?php echo number_format($product['price'], 2, ',', ' ') . ' руб.'; ?></p>
+                                <h3><?php echo $userProduct->getProduct()->getName(); ?></h3>
+                                <p><?php echo $userProduct->getProduct()->getDescription(); ?></p>
+                                <p><strong>Цена: </strong><?php echo number_format($userProduct->getProduct()->getPrice(), 2, ',', ' ') . ' руб.'; ?></p>
                             </div>
                         </div>
 
                         <div class="cart-item-actions">
-                            <label for="amount_<?php echo $product['id']; ?>"><b>Количество:</b></label>
-                            <input type="number" id="amount_<?php echo $product['id']; ?>" name="amount[<?php echo $product['id']; ?>]" value="<?php echo $product['amount']; ?>" min="1" required>
+                            <label for="amount_<?php echo $userProduct->getProductId(); ?>"><b>Количество:</b></label>
+                            <input type="number" id="amount_<?php echo $userProduct->getProductId(); ?>" name="amount[<?php echo $userProduct->getProductId(); ?>]" value="<?php echo $userProduct->getAmount(); ?>" min="1" required>
 
                             <div class="amount-controls">
                                 <form action="/remove-product" method="POST" style="display: inline;">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <input type="hidden" name="product_id" value="<?php echo $userProduct->getProductId(); ?>">
                                     <input type="hidden" name="amount" value="1">
                                     <button type="submit">-</button>
                                 </form>
                                 <form action="/add-product" method="POST" style="display: inline;">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <input type="hidden" name="product_id" value="<?php echo $userProduct->getProductId(); ?>">
                                     <input type="hidden" name="amount" value="1">
                                     <button type="submit">+</button>
                                 </form>
@@ -47,10 +47,11 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+
             </div>
 
             <div class="cart-total">
-                <p><strong>Общая стоимость: </strong><?php echo number_format($totalPrice, 2, ',', ' ') . ' руб.'; ?></p>
+                <p><strong>Общая стоимость: </strong><?php echo number_format($totalSum, 2, ',', ' ') . ' руб.'; ?></p>
             </div>
         </form>
     <?php endif; ?>
