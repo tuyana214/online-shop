@@ -5,19 +5,20 @@ namespace Service;
 use DTO\AddProductDTO;
 use DTO\DecreaseProductDTO;
 use Model\Product;
-use Model\User;
 use Model\UserProduct;
+use Service\Auth\AuthInterface;
+use Service\Auth\AuthSessionService;
 
 class CartService
 {
     private UserProduct $userProductModel;
-    private AuthService $authService;
+    private AuthInterface $authService;
     private Product $productModel;
 
     public function __construct()
     {
         $this->userProductModel = new UserProduct();
-        $this->authService = new AuthService();
+        $this->authService = new AuthSessionService();
         $this->productModel = new Product();
     }
 

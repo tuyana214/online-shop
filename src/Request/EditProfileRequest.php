@@ -3,7 +3,7 @@
 namespace Request;
 
 use Model\User;
-use Service\AuthService;
+use Service\Auth\AuthSessionService;
 
 class EditProfileRequest
 {
@@ -44,7 +44,7 @@ class EditProfileRequest
             } else {
                 $userModel = new User();
                 $user = $userModel->getByEmail($this->data['email']);
-                $authService = new AuthService();
+                $authService = new AuthSessionService();
                 $user = $authService->getCurrentUser();
                 if (!$user) {
                     $errors['email'] = "Этот Email уже зарегистрирован";
