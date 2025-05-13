@@ -15,20 +15,34 @@ class Order extends Model
     private int $sum;
     private array $orderProducts = [];
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return 'orders';
     }
 
-    public function create(
+    public static function createObj(array $order): self
+    {
+        $obj = new self();
+        $obj->id = $order['id'];
+        $obj->contactName = $order['contact_name'];
+        $obj->contactPhone = $order['contact_phone'];
+        $obj->comment = $order['comment'];
+        $obj->userId = $order['user_id'];
+        $obj->address = $order['address'];
+
+        return $obj;
+    }
+
+    public static function create(
         string $contactName,
         string $contactPhone,
         string $comment,
         string $address,
         int $userId
     ){
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO {$this->getTableName()} (contact_name, contact_phone, comment, address, user_id) 
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare(
+            "INSERT INTO {$tableName} (contact_name, contact_phone, comment, address, user_id) 
              VALUES (:name, :phone, :comment, :address, :user_id) RETURNING id"
         );
 
@@ -45,31 +59,26 @@ class Order extends Model
         return $data['id'];
     }
 
-    public function getAllByUserId(int $userId): array
+    public static function getAllByUserId(int $userId): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE user_id = :user_id");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT * FROM {$tableName} WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
-        $orders = $stmt->fetchAll();
+        $userOrders = $stmt->fetchAll();
 
-        if ($orders === false) {
+        if ($userOrders === false) {
             return [];
         }
 
-        $ordersArray = [];
-        foreach ($orders as $order) {
-            $obj = new self();
-            $obj->id = $order['id'];
-            $obj->contactName = $order['contact_name'];
-            $obj->contactPhone = $order['contact_phone'];
-            $obj->comment = $order['comment'];
-            $obj->userId = $order['user_id'];
-            $obj->address = $order['address'];
-
-            $ordersArray[] = $obj;
+        $orders = [];
+        foreach ($userOrders as $userOrder) {
+            $obj = self::createObj($userOrder);
+            $orders[] = $obj;
         }
 
-        return $ordersArray;
+        return $orders;
     }
+
 
     public function setOrderProducts(array $orderProducts): void {
         $this->orderProducts = $orderProducts;

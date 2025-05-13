@@ -13,13 +13,14 @@ class Review extends Model
     private string $comment;
     private string $created_at;
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return 'reviews';
     }
-    public function getByProductId($productId): array
+    public static function getByProductId($productId): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE product_id = :product_id");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT * FROM {$tableName} WHERE product_id = :product_id");
         $stmt->execute(["product_id" => $productId]);
         $reviews = $stmt->fetchAll();
 
@@ -43,9 +44,10 @@ class Review extends Model
         return $reviewsArray;
     }
 
-    public function createReview(int $productId, string $name, string $rating, string $comment)
+    public static function createReview(int $productId, string $name, string $rating, string $comment)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (product_id, name, rating, comment, created_at) VALUES (:product_id, :name, :rating, :comment, NOW())");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("INSERT INTO {$tableName} (product_id, name, rating, comment, created_at) VALUES (:product_id, :name, :rating, :comment, NOW())");
         $stmt->execute([$productId, $name, $rating, $comment]);
     }
 

@@ -11,14 +11,15 @@ class User extends Model
     private string $email;
     private string $password;
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return 'users';
     }
 
-    public function getByEmail(string $email): self|null
+    public static function getByEmail(string $email): self|null
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE email = :email");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT * FROM {$tableName} WHERE email = :email");
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch();
 
@@ -35,9 +36,10 @@ class User extends Model
         return $obj;
     }
 
-    public function getByUserId(int $userId): self|null
+    public static function getByUserId(int $userId): self|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()} WHERE id = " . $userId);
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->query("SELECT * FROM {$tableName} WHERE id = " . $userId);
         $user = $stmt->fetch();
 
         if ($user === false) {
@@ -53,25 +55,28 @@ class User extends Model
         return $obj;
     }
 
-    public function updateDataWhereNewPswById(string $name, string $email, string $new_password, int $userId)
+    public static function updateDataWhereNewPswById(string $name, string $email, string $new_password, int $userId)
     {
-        $stmt = $this->pdo->prepare("UPDATE {$this->getTableName()} SET name = :name, email = :email, password = :password WHERE id = :id");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("UPDATE {$tableName} SET name = :name, email = :email, password = :password WHERE id = :id");
         $user = $stmt->execute([':name' => $name, ':email' => $email, ':password' => password_hash($new_password, PASSWORD_DEFAULT), ':id' => $userId]);
 
         return $user;
     }
 
-    public function updateDataWhereOldPswById(string $name, string $email, int $userId)
+    public static function updateDataWhereOldPswById(string $name, string $email, int $userId)
     {
-        $stmt = $this->pdo->prepare("UPDATE {$this->getTableName()} SET name = :name, email = :email WHERE id = :id");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("UPDATE {$tableName} SET name = :name, email = :email WHERE id = :id");
         $user = $stmt->execute([':name' => $name, ':email' => $email, ':id' => $userId]);
 
         return $user;
     }
 
-    public function insertData(string $name, string $email, string $password)
+    public static function insertData(string $name, string $email, string $password)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO {$this->getTableName()} (name, email, password) VALUES (:name, :email, :password)");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("INSERT INTO {$tableName} (name, email, password) VALUES (:name, :email, :password)");
         $stmt->execute([':name' => $name, ':email' => $email, ':password' => $password]);
     }
 
@@ -94,6 +99,4 @@ class User extends Model
     {
         return $this->password;
     }
-
-
 }

@@ -21,7 +21,7 @@ class ProductController extends BaseController
     public function getProducts()
     {
         if ($this->authService->check()) {
-            $products = $this->productModel->getAll();
+            $products = Product::getAll();
 
             require_once '../Views/catalog_page.php';
         } else {

@@ -1,0 +1,26 @@
+[2025-05-06 10:07:14] ERROR: Для оформления заказа сумма корзины должна быть больше 1000 in /var/www/html/src/Service/OrderService.php on line 35
+[2025-05-06 12:18:41] ОШИБКА: Для оформления заказа сумма корзины должна быть больше 1000 в /var/www/html/src/Service/OrderService.php в строке номер 35
+[2025-05-06 14:18:18] ОШИБКА: Для оформления заказа сумма корзины должна быть больше 1000 в /var/www/html/src/Service/OrderService.php в строке номер 35
+[2025-05-13 12:52:10] ОШИБКА: Cannot assign null to property Model\Product::$id of type int в /var/www/html/src/Model/Product.php в строке номер 27
+[2025-05-13 12:52:42] ОШИБКА: Call to undefined method Model\UserProduct::getTotalSum() в /var/www/html/src/Service/CartService.php в строке номер 69
+[2025-05-13 12:52:51] ОШИБКА: Call to undefined method Model\UserProduct::getTotalSum() в /var/www/html/src/Service/CartService.php в строке номер 69
+[2025-05-13 13:19:47] ОШИБКА: SQLSTATE[42P01]: Undefined table: 7 ERROR:  missing FROM-clause entry for table "o"
+LINE 2:             INNER JOIN order_products op ON o.id = op.order_...
+                                                    ^ в /var/www/html/src/Model/Order.php в строке номер 71
+[2025-05-13 13:20:50] ОШИБКА: Model\Product::setName(): Argument #1 ($name) must be of type string, null given, called in /var/www/html/src/Model/Order.php on line 88 в /var/www/html/src/Model/Product.php в строке номер 112
+[2025-05-13 13:21:15] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 104
+[2025-05-13 13:21:31] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 104
+[2025-05-13 13:24:11] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 104
+[2025-05-13 13:29:02] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 104
+[2025-05-13 13:32:05] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 104
+[2025-05-13 13:33:29] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 107
+[2025-05-13 13:34:28] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 103
+[2025-05-13 13:38:39] ОШИБКА: Typed property Model\Product::$image_url must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 106
+[2025-05-13 14:13:15] ОШИБКА: SQLSTATE[42703]: Undefined column: 7 ERROR:  column op.price does not exist
+LINE 1: SELECT o.*, op.product_id, op.amount, op.price, p.name, p.im...
+                                              ^
+HINT:  Perhaps you meant to reference the column "p.price". в /var/www/html/src/Model/Order.php в строке номер 72
+[2025-05-13 15:19:09] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
+[2025-05-13 15:20:03] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
+[2025-05-13 15:20:04] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
+[2025-05-13 15:20:42] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20

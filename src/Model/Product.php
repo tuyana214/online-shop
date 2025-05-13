@@ -10,78 +10,65 @@ class Product extends Model
     private string $name;
     private string $description;
     private int $price;
-    private string $image_url;
+    private string $image_url = '';
 
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return 'products';
     }
-    public function getAll(): array
+
+    public static function createObj(array $product): self|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()}");
-        $products = $stmt->fetchAll();
-
-        if ($products === false) {
-            return [];
+        if ($product === false) {
+            return null;
         }
 
-        $productsArray = [];
-        foreach ($products as $product) {
-            $obj = new self();
-            $obj->id = $product["id"];
-            $obj->name = $product["name"];
-            $obj->description = $product["description"];
-            $obj->price = $product["price"];
-            $obj->image_url = $product["image_url"];
+        $obj = new self();
+        $obj->id = $product["id"];
+        $obj->name = $product["name"];
+        $obj->description = $product["description"];
+        $obj->price = $product["price"];
+        $obj->image_url = isset($product["image_url"]) ? $product["image_url"] : '';
 
-            $productsArray[] = $obj;
-        }
-
-        return $productsArray;
+        return $obj;
     }
 
-    public function getProductId(int $productId): self|null
+    public static function getAll(): array|false
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE id = :product_id");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->query("SELECT * FROM {$tableName}");
+        $products = $stmt->fetchAll();
+
+        $newProducts = [];
+        foreach ($products as $product) {
+            $newProducts[] = self::createObj($product);
+        }
+        return $newProducts;
+    }
+
+    public static function getProductId(int $productId): self|null
+    {
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT * FROM {$tableName} WHERE id = :product_id");
         $stmt->execute(['product_id' => $productId]);
         $product = $stmt->fetch();
 
-        if ($product === false) {
-            return null;
-        }
-
-        $obj = new self();
-        $obj->id = $product["id"];
-        $obj->name = $product["name"];
-        $obj->description = $product["description"];
-        $obj->price = $product["price"];
-        $obj->image_url = $product["image_url"];
-
-        return $obj;
+        return self::createObj($product);
     }
 
-    public function getOneById(int $productId): self|null
+    public static function getOneById(int $productId): self|null
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->getTableName()} WHERE id = $productId");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->query("SELECT * FROM {$tableName} WHERE id = $productId");
         $product = $stmt->fetch();
 
-        if ($product === false) {
-            return null;
-        }
-
-        $obj = new self();
-        $obj->id = $product["id"];
-        $obj->name = $product["name"];
-        $obj->description = $product["description"];
-        $obj->price = $product["price"];
-        $obj->image_url = $product["image_url"];
-
-        return $obj;
+        return self::createObj($product);
     }
 
-    public function getProductPrice(int $productId)
+    public static function getProductPrice(int $productId)
     {
-        $stmt = $this->pdo->prepare("SELECT price FROM {$this->getTableName()} WHERE id = :productId");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT price FROM {$tableName} WHERE id = :productId");
         $stmt->execute(['productId' => $productId]);
         $product = $stmt->fetch();
 
@@ -111,9 +98,33 @@ class Product extends Model
     {
         return $this->price;
     }
-
     public function getImageUrl(): string
     {
         return $this->image_url;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setPrice(int $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function setImageUrl(string $image_url): void
+    {
+        $this->image_url = $image_url;
     }
 }

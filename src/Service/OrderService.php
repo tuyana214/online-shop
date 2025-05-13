@@ -17,6 +17,7 @@ class OrderService
     private UserProduct $userProductModel;
     private AuthInterface $authService;
     private Product $productModel;
+    private CartService $cartService;
 
     public function __construct()
     {
@@ -25,11 +26,18 @@ class OrderService
         $this->userProductModel = new UserProduct();
         $this->authService = new AuthSessionService();
         $this->productModel = new Product();
+        $this->cartService = new CartService();
     }
     public function create(OrderCreateDTO $data)
     {
+        $sum = $this->cartService->getSum();
+        if ($sum < 1000) {
+            throw new \Exception("Для оформления заказа сумма корзины должна быть больше 1000");
+        }
+
         $user = $this->authService->getCurrentUser();
-        $userProducts = $this->userProductModel->getAllUserProductsByUserId($user->getId());
+        $userProducts = $this->userProductModel->getAllByUserIdWithProducts($user->getId());
+
         $orderId = $this->orderModel->create(
             $data->getContactName(),
             $data->getContactPhone(),
@@ -51,22 +59,20 @@ class OrderService
     public function getAll(): array
     {
         $user = $this->authService->getCurrentUser();
-        $orders = $this->orderModel->getAllByUserId($user->getId());
+        $orders = Order::getAllByUserId($user->getId());
 
-        foreach ($orders as $userOrder) {
-            $orderProducts = $this->orderProductModel->getAllByOrderId($userOrder->getId());
+        foreach ($orders as $order) {
+            $orderProducts = OrderProduct::getAllByOrderId($order->getId());
+
             $totalSum = 0;
             foreach ($orderProducts as $orderProduct) {
-                $product = $this->productModel->getOneById($orderProduct->getProductId());
-                $orderProduct->setProduct($product);
-
-                $itemSum = $orderProduct->getAmount() * $product->getPrice();
+                $itemSum = $orderProduct->getAmount() * $orderProduct->getProduct()->getPrice();
                 $orderProduct->setSum($itemSum);
 
                 $totalSum += $itemSum;
             }
-            $userOrder->setOrderProducts($orderProducts);
-            $userOrder->setSum($totalSum);
+            $order->setOrderProducts($orderProducts);
+            $order->setSum($totalSum);
         }
         return $orders;
     }

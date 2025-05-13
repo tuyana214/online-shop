@@ -1,30 +1,43 @@
 <?php
 
 namespace Core;
+use Service\Logger\LoggerInterface;
+use Throwable;
 
 class App
 {
     private array $routes = [];
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
     public function run()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        if(isset($this->routes[$requestUri])) {
+        if (isset($this->routes[$requestUri])) {
             $routeMethods = $this->routes[$requestUri];
-            if(isset($routeMethods[$requestMethod])) {
+            if (isset($routeMethods[$requestMethod])) {
                 $handler = $routeMethods[$requestMethod];
                 $class = $handler['class'];
                 $method = $handler['method'];
                 $controller = new $class();
-
                 $requestClass = $handler['request'];
 
-                if ($requestClass) {
-                    $request = new $requestClass($_POST);
-                    $controller->$method($request);
-                } else {
-                    $controller->$method();
+                try {
+                    if ($requestClass) {
+                        $request = new $requestClass($_POST);
+                        $controller->$method($request);
+                    } else {
+                        $controller->$method();
+                    }
+                } catch (\Throwable $exception) {
+                    $this->logger->log($exception->getMessage(), $exception->getFile(), $exception->getLine());
+                    http_response_code(500);
+                    require_once '../Views/500.php';
                 }
             } else {
                 echo "$requestMethod не поддерживается для $requestUri";
@@ -32,6 +45,7 @@ class App
         } else {
             http_response_code(404);
             require_once '../Views/404.php';
+            exit();
         }
     }
 

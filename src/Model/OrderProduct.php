@@ -11,15 +11,27 @@ class OrderProduct extends Model
     private int $amount;
     private Product $product;
     private int $sum;
-    protected function getTableName(): string
+    protected static function getTableName(): string
     {
         return 'order_products';
     }
 
-    public function create(int $orderId, int $productId, int $amount)
+    public static function createObj(array $orderProduct): self
     {
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO {$this->getTableName()} (order_id, product_id, amount) 
+        $obj = new self();
+        $obj->id = $orderProduct['id'];
+        $obj->orderId = $orderProduct['order_id'];
+        $obj->productId = $orderProduct['product_id'];
+        $obj->amount = $orderProduct['amount'];
+
+        return $obj;
+    }
+
+    public static function create(int $orderId, int $productId, int $amount)
+    {
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare(
+            "INSERT INTO {$tableName} (order_id, product_id, amount) 
              VALUES (:orderId, :productId, :amount)"
         );
         $stmt->execute([
@@ -28,9 +40,10 @@ class OrderProduct extends Model
             'amount' => $amount]);
     }
 
-    public function getAllByOrderId(int $orderId): array
+    public static function getAllByOrderId(int $orderId): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->getTableName()} WHERE order_id = :orderId");
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("SELECT * FROM {$tableName} op INNER JOIN products p ON op.product_id = p.id WHERE order_id = :orderId");
         $stmt->execute(['orderId' => $orderId]);
         $orderProducts = $stmt->fetchAll();
 
@@ -40,13 +53,17 @@ class OrderProduct extends Model
 
         $orderProductsArray = [];
         foreach ($orderProducts as $orderProduct) {
-            $obj = new self();
-            $obj->id = $orderProduct['id'];
-            $obj->orderId = $orderProduct['order_id'];
-            $obj->productId = $orderProduct['product_id'];
-            $obj->amount = $orderProduct['amount'];
+            $orderProductModel = new OrderProduct();
+            $orderProductModel->setProductId($orderProduct['product_id']);
+            $orderProductModel->setAmount($orderProduct['amount']);
 
-            $orderProductsArray[] = $obj;
+            $orderProductModel->setSum($orderProduct['amount'] * $orderProduct['price']);
+
+            $product = Product::createObj($orderProduct);
+
+            $orderProductModel->setProduct($product);
+
+            $orderProductsArray[] = $orderProductModel;
         }
 
         return $orderProductsArray;
@@ -90,5 +107,25 @@ class OrderProduct extends Model
     public function setSum(int $sum): void
     {
         $this->sum = $sum;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setOrderId(int $orderId): void
+    {
+        $this->orderId = $orderId;
+    }
+
+    public function setProductId(int $productId): void
+    {
+        $this->productId = $productId;
+    }
+
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
     }
 }
