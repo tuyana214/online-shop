@@ -18,6 +18,12 @@ class AuthSessionService implements AuthInterface
         return isset($_SESSION['userId']);
     }
 
+    public function isAdmin(): bool
+    {
+        $this->startSession();
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
     public function getCurrentUser(): ?User
     {
         $this->startSession();
@@ -39,6 +45,8 @@ class AuthSessionService implements AuthInterface
             if (password_verify($password, $passwordDb)) {
                 $this->startSession();
                 $_SESSION['userId'] = $user->getId();
+                $_SESSION['email'] = $user->getEmail();
+                $_SESSION['role'] = $user->getRole();
                 return true;
             } else {
                 return false;

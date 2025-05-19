@@ -24,3 +24,109 @@ HINT:  Perhaps you meant to reference the column "p.price". в /var/www/html/src
 [2025-05-13 15:20:03] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
 [2025-05-13 15:20:04] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
 [2025-05-13 15:20:42] ОШИБКА: Model\Product::createObj(): Argument #1 ($product) must be of type array, int given, called in /var/www/html/src/Model/OrderProduct.php on line 62 в /var/www/html/src/Model/Product.php в строке номер 20
+[2025-05-15 13:09:42] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:14:42] ОШИБКА: Typed property Model\Product::$amount must not be accessed before initialization в /var/www/html/src/Model/Product.php в строке номер 134
+[2025-05-15 13:14:54] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:14:55] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:14:58] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:15:13] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:15:14] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:38] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:39] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:39] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:40] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:40] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:24:50] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:29:10] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/catalog_page.php в строке номер 18
+[2025-05-15 13:45:35] ОШИБКА: Model\UserProduct::getAllByUserIdWithProducts(): Argument #1 ($userId) must be of type int, null given, called in /var/www/html/src/Controllers/ProductController.php on line 29 в /var/www/html/src/Model/UserProduct.php в строке номер 35
+[2025-05-15 13:50:31] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:47] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:49] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:50] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:50] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:50] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:50] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:50:55] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:51:14] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:51:29] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:51:44] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:55:55] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:57:25] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 13:59:57] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:01:51] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-15 14:03:52] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:03:57] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-15 14:05:44] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:06:30] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:18:26] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-15 14:22:20] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-15 14:25:45] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:27:35] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:28:52] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:30:13] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:30:33] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-15 14:30:46] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 11:50:48] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 11:50:51] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-19 11:51:01] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 11:59:09] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-19 12:03:23] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 12:03:46] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-19 12:03:48] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 12:07:55] ОШИБКА: Service\CartService::addProduct(): Return value must be of type DTO\AddProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 34
+[2025-05-19 12:08:00] ОШИБКА: Service\CartService::decreaseProduct(): Return value must be of type DTO\DecreaseProductDTO, none returned в /var/www/html/src/Service/CartService.php в строке номер 51
+[2025-05-19 12:19:42] ОШИБКА: syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" в /var/www/html/src/Views/catalog_page.php в строке номер 247
+[2025-05-19 12:19:48] ОШИБКА: syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" в /var/www/html/src/Views/catalog_page.php в строке номер 247
+[2025-05-19 12:19:56] ОШИБКА: syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" в /var/www/html/src/Views/catalog_page.php в строке номер 247
+[2025-05-19 12:19:57] ОШИБКА: syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" в /var/www/html/src/Views/catalog_page.php в строке номер 247
+[2025-05-19 12:20:03] ОШИБКА: syntax error, unexpected end of file, expecting "elseif" or "else" or "endif" в /var/www/html/src/Views/catalog_page.php в строке номер 247
+[2025-05-19 12:31:15] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/catalog_page.php в строке номер 12
+[2025-05-19 12:31:30] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/catalog_page.php в строке номер 20
+[2025-05-19 12:31:41] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/catalog_page.php в строке номер 36
+[2025-05-19 12:31:49] ОШИБКА: Call to a member function check() on null в /var/www/html/src/Views/catalog_page.php в строке номер 37
+[2025-05-19 12:41:43] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:41:48] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:42:28] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:42:53] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:43:02] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:43:11] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:43:32] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:43:59] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:44:11] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:44:24] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 12:45:38] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 106
+[2025-05-19 13:13:44] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:14:17] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:20:09] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:20:26] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:20:31] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:21:27] ОШИБКА: Typed property Model\User::$role must not be accessed before initialization в /var/www/html/src/Model/User.php в строке номер 105
+[2025-05-19 13:25:07] ОШИБКА: Call to private method Controllers\AdminController::getAdminPage() from scope Core\App в /var/www/html/src/Core/App.php в строке номер 35
+[2025-05-19 13:25:38] ОШИБКА: Call to private method Controllers\AdminController::getAdminPage() from scope Core\App в /var/www/html/src/Core/App.php в строке номер 35
+[2025-05-19 13:26:20] ОШИБКА: Call to private method Controllers\AdminController::getAdminPage() from scope Core\App в /var/www/html/src/Core/App.php в строке номер 35
+[2025-05-19 13:26:42] ОШИБКА: Call to private method Controllers\AdminController::getAdminPage() from scope Core\App в /var/www/html/src/Core/App.php в строке номер 35
+[2025-05-19 13:26:50] ОШИБКА: Call to private method Controllers\AdminController::getAdminPage() from scope Core\App в /var/www/html/src/Core/App.php в строке номер 35
+[2025-05-19 13:30:47] ОШИБКА: Typed property Controllers\BaseController::$authService must not be accessed before initialization в /var/www/html/src/Controllers/AdminController.php в строке номер 19
+[2025-05-19 13:31:04] ОШИБКА: Typed property Controllers\BaseController::$authService must not be accessed before initialization в /var/www/html/src/Controllers/AdminController.php в строке номер 19
+[2025-05-19 13:31:05] ОШИБКА: Typed property Controllers\BaseController::$authService must not be accessed before initialization в /var/www/html/src/Controllers/AdminController.php в строке номер 19
+[2025-05-19 13:31:28] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/admin_page.php в строке номер 35
+[2025-05-19 13:36:37] ОШИБКА: Call to undefined method Model\Product::getAmount() в /var/www/html/src/Views/admin_page.php в строке номер 36
+[2025-05-19 13:37:30] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/admin_page.php в строке номер 37
+[2025-05-19 13:37:43] ОШИБКА: Cannot use object of type Model\Product as array в /var/www/html/src/Views/admin_page.php в строке номер 36
+[2025-05-19 16:03:05] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "user_products_product_id_fkey" on table "user_products"
+DETAIL:  Key (id)=(1) is still referenced from table "user_products". в /var/www/html/src/Model/Product.php в строке номер 100
+[2025-05-19 16:03:10] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "user_products_product_id_fkey" on table "user_products"
+DETAIL:  Key (id)=(1) is still referenced from table "user_products". в /var/www/html/src/Model/Product.php в строке номер 100
+[2025-05-19 16:05:51] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "user_products_product_id_fkey" on table "user_products"
+DETAIL:  Key (id)=(3) is still referenced from table "user_products". в /var/www/html/src/Model/Product.php в строке номер 100
+[2025-05-19 16:08:08] ОШИБКА: Too few arguments to function Controllers\AdminController::deleteProduct(), 0 passed in /var/www/html/src/Core/App.php on line 35 and exactly 1 expected в /var/www/html/src/Controllers/AdminController.php в строке номер 53
+[2025-05-19 16:09:46] ОШИБКА: Too few arguments to function Controllers\AdminController::deleteProduct(), 0 passed in /var/www/html/src/Core/App.php on line 35 and exactly 1 expected в /var/www/html/src/Controllers/AdminController.php в строке номер 53
+[2025-05-19 16:09:56] ОШИБКА: Too few arguments to function Controllers\AdminController::deleteProduct(), 0 passed in /var/www/html/src/Core/App.php on line 35 and exactly 1 expected в /var/www/html/src/Controllers/AdminController.php в строке номер 53
+[2025-05-19 16:13:12] ОШИБКА: Too few arguments to function Controllers\AdminController::deleteProduct(), 0 passed in /var/www/html/src/Core/App.php on line 35 and exactly 1 expected в /var/www/html/src/Controllers/AdminController.php в строке номер 53
+[2025-05-19 16:16:33] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "user_products_product_id_fkey" on table "user_products"
+DETAIL:  Key (id)=(3) is still referenced from table "user_products". в /var/www/html/src/Model/Product.php в строке номер 100
+[2025-05-19 16:20:48] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "order_products_product_id_fkey" on table "order_products"
+DETAIL:  Key (id)=(3) is still referenced from table "order_products". в /var/www/html/src/Model/Product.php в строке номер 103
+[2025-05-19 16:21:38] ОШИБКА: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  update or delete on table "products" violates foreign key constraint "reviews_product_id_fkey" on table "reviews"
+DETAIL:  Key (id)=(3) is still referenced from table "reviews". в /var/www/html/src/Model/Product.php в строке номер 106
+[2025-05-19 16:29:27] ОШИБКА: SQLSTATE[HY093]: Invalid parameter number: :image_url в /var/www/html/src/Model/Product.php в строке номер 88

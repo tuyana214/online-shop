@@ -10,7 +10,7 @@ class User extends Model
     private string $name;
     private string $email;
     private string $password;
-
+    private string $role;
     protected static function getTableName(): string
     {
         return 'users';
@@ -32,6 +32,7 @@ class User extends Model
         $obj->name = $user["name"];
         $obj->email = $user["email"];
         $obj->password = $user["password"];
+        $obj->role = $user["role"];
 
         return $obj;
     }
@@ -51,29 +52,26 @@ class User extends Model
         $obj->name = $user["name"];
         $obj->email = $user["email"];
         $obj->password = $user["password"];
+        $obj->role = $user["role"];
 
         return $obj;
     }
 
-    public static function updateDataWhereNewPswById(string $name, string $email, string $new_password, int $userId)
+    public static function updateDataWhereNewPswById(string $name, string $email, string $new_password, int $userId): bool
     {
         $tableName = static::getTableName();
         $stmt = static::getPDO()->prepare("UPDATE {$tableName} SET name = :name, email = :email, password = :password WHERE id = :id");
-        $user = $stmt->execute([':name' => $name, ':email' => $email, ':password' => password_hash($new_password, PASSWORD_DEFAULT), ':id' => $userId]);
-
-        return $user;
+        return $stmt->execute([':name' => $name, ':email' => $email, ':password' => password_hash($new_password, PASSWORD_DEFAULT), ':id' => $userId]);
     }
 
-    public static function updateDataWhereOldPswById(string $name, string $email, int $userId)
+    public static function updateDataWhereOldPswById(string $name, string $email, int $userId): bool
     {
         $tableName = static::getTableName();
         $stmt = static::getPDO()->prepare("UPDATE {$tableName} SET name = :name, email = :email WHERE id = :id");
-        $user = $stmt->execute([':name' => $name, ':email' => $email, ':id' => $userId]);
-
-        return $user;
+        return $stmt->execute([':name' => $name, ':email' => $email, ':id' => $userId]);
     }
 
-    public static function insertData(string $name, string $email, string $password)
+    public static function insertData(string $name, string $email, string $password): void
     {
         $tableName = static::getTableName();
         $stmt = static::getPDO()->prepare("INSERT INTO {$tableName} (name, email, password) VALUES (:name, :email, :password)");
@@ -98,5 +96,10 @@ class User extends Model
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
     }
 }

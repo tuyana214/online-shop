@@ -17,6 +17,11 @@ class AuthCookieService implements AuthInterface
         return isset($_COOKIE['userId']);
     }
 
+    public function isAdmin(): bool
+    {
+        return isset($_COOKIE['role']) && $_COOKIE['role'] === 'admin';
+    }
+
     public function getCurrentUser(): ?User
     {
         if ($this->check()) {

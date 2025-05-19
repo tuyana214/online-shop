@@ -13,4 +13,6 @@ interface AuthInterface
     public function auth(string $email, string $password): bool;
 
     public function logout();
+
+    public function isAdmin(): bool;
 }

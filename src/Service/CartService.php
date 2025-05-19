@@ -20,7 +20,7 @@ class CartService
         $this->authService = new AuthSessionService();
     }
 
-    public function addProduct(AddProductDTO $data)
+    public function addProduct(AddProductDTO $data): AddProductDTO
     {
         $user = $this->authService->getCurrentUser();
         $userProduct = $this->userProductModel->getById($user->getId(), $data->getProductId());
@@ -33,7 +33,7 @@ class CartService
         }
     }
 
-    public function decreaseProduct(DecreaseProductDTO $data)
+    public function decreaseProduct(DecreaseProductDTO $data): DecreaseProductDTO
     {
         $user = $this->authService->getCurrentUser();
         $userProduct = $this->userProductModel->getById($user->getId(), $data->getProductId());

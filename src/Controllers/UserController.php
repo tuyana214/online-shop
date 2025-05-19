@@ -59,8 +59,15 @@ class UserController extends BaseController
         if (empty($errors)) {
             $result = $this->authService->auth($request->getEmail(), $request->getPassword());
             if ($result) {
-                header("Location: /catalog");
-                exit;
+                $user = $this->authService->getCurrentUser();
+                $role = $user->getRole();
+
+                if ($role === "admin") {
+                    header("Location: /admin");
+                } else {
+                    header("Location: /catalog");
+                }
+                exit();
             } else {
                 $errors['authorization'] = "Неверный email или пароль.";
             }

@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Product;
 use Model\Review;
+use Model\UserProduct;
 use Request\AddReviewRequest;
 use Request\ShowProductRequest;
 
@@ -11,18 +12,21 @@ class ProductController extends BaseController
 {
     private Product $productModel;
     private Review $reviewModel;
+    private UserProduct $userProductModel;
 
     public function __construct()
     {
         parent::__construct();
         $this->productModel = new Product();
         $this->reviewModel = new Review();
+        $this->userProductModel = new UserProduct();
     }
     public function getProducts()
     {
         if ($this->authService->check()) {
             $products = Product::getAll();
-
+            $userId = $_SESSION['userId'];
+            $userProducts = $this->userProductModel->getAllByUserIdWithProducts($userId);
             require_once '../Views/catalog_page.php';
         } else {
             header("Location: /login");

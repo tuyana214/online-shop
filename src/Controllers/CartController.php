@@ -40,17 +40,23 @@ class CartController extends BaseController
         $errors = $request->validate();
         if (empty($errors)) {
             $dto = new AddProductDTO($request->getProductId(), $request->getAmount());
-            $this->cartService->addProduct($dto);
-            header("Location: /catalog");
-            exit();
+            $amount = $this->cartService->addProduct($dto);
+            $result = [
+                'amount' => $amount,
+            ];
+
+            echo json_encode($result);
         }
     }
 
     public function decreaseProduct(DecreaseProductRequest $request)
     {
         $dto = new DecreaseProductDTO($request->getProductId());
-        $this->cartService->decreaseProduct($dto);
-        header("Location: /catalog");
-        exit();
+        $amount = $this->cartService->decreaseProduct($dto);
+        $result = [
+            'amount' => $amount,
+        ];
+
+        echo json_encode($result);
     }
 }

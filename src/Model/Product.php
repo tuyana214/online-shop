@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use DTO\AddNewProductDTO;
+
 require_once "../Model/Model.php";
 
 class Product extends Model
@@ -65,18 +67,46 @@ class Product extends Model
         return self::createObj($product);
     }
 
-    public static function getProductPrice(int $productId)
+//    public static function getProductPrice(int $productId)
+//    {
+//        $tableName = static::getTableName();
+//        $stmt = static::getPDO()->prepare("SELECT price FROM {$tableName} WHERE id = :productId");
+//        $stmt->execute(['productId' => $productId]);
+//        $product = $stmt->fetch();
+//
+//        if ($product === false) {
+//            return null;
+//        }
+//
+//        return $product['price'];
+//    }
+
+    public static function addProduct(AddNewProductDTO $dto)
     {
         $tableName = static::getTableName();
-        $stmt = static::getPDO()->prepare("SELECT price FROM {$tableName} WHERE id = :productId");
-        $stmt->execute(['productId' => $productId]);
-        $product = $stmt->fetch();
+        $stmt = static::getPDO()->prepare("INSERT INTO {$tableName} (name, price, description, image_url) VALUES (:name, :price, :description, :image_url)");
+        $stmt->execute([
+            ':name' => $dto->getName(),
+            ':price' => $dto->getPrice(),
+            ':description' => $dto->getDescription(),
+            ':image_url' => $dto->getImageUrl()
+        ]);
+    }
 
-        if ($product === false) {
-            return null;
-        }
+    public static function deleteProduct(int $productId)
+    {
+        $stmt = static::getPDO()->prepare("DELETE FROM user_products WHERE product_id = :product_id");
+        $stmt->execute([':product_id' => $productId]);
 
-        return $product['price'];
+        $stmt = static::getPDO()->prepare("DELETE FROM order_products WHERE product_id = :product_id");
+        $stmt->execute([':product_id' => $productId]);
+
+        $stmt = static::getPDO()->prepare("DELETE FROM reviews WHERE product_id = :product_id");
+        $stmt->execute([':product_id' => $productId]);
+
+        $tableName = static::getTableName();
+        $stmt = static::getPDO()->prepare("DELETE FROM {$tableName} WHERE id = :id");
+        $stmt->execute([':id' => $productId]);
     }
 
     public function getId(): int
